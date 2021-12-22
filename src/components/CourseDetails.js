@@ -1,0 +1,143 @@
+import React from "react";
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Button,
+  Avatar,
+} from "@mui/material";
+import { LocalLibrary, LockClock } from "@mui/icons-material";
+import { makeStyles } from "@mui/styles";
+
+import AutoScrollContainer from "./AutoScrollContainer";
+import config from "../config.json";
+
+const CouseDetails = ({
+  title,
+  coordinatorName,
+  coordinatorAddress,
+  coordinatorPhone,
+  onEnroll,
+}) => {
+  const classes = useStyles();
+  return (
+    <AutoScrollContainer>
+      <Box style={{ marginBottom: "2em" }}>
+        <Box
+          style={{
+            background:
+              "linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.2))",
+            marginBottom: "1em",
+          }}
+        >
+          <Grid
+            container
+            style={{ height: "14em" }}
+            justifyContent={"center"}
+            alignItems="center"
+          >
+            <Typography variant="h4">{title}</Typography>
+          </Grid>
+        </Box>
+        <Container maxWidth="sm">
+          <Box className={classes.descriptionBox}>
+            <Typography varaint="body1">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Id alias
+              mollitia, odit modi placeat aspernatur harum sint eos non quisquam
+              vel nobis ut. Corrupti, aspernatur architecto. Repellat asperiores
+              et officiis veritatis officia libero. Consectetur, dolor. Alias
+              deserunt natus, tenetur veritatis accusantium illum unde, nesciunt
+              sit excepturi tempora labore aperiam dolore.
+            </Typography>
+          </Box>
+          <Box className={classes.coordinatorInfoBox}>
+            <Grid
+              container
+              direction="column"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Grid item>
+                <Avatar sx={{ width: "5em", height: "5em" }}></Avatar>
+              </Grid>
+              <Grid item>
+                <Typography variant="h5" align="center" fontWeight="600">
+                  {coordinatorName}
+                </Typography>
+                <Typography variant="subtitle1" align="center">
+                  {coordinatorAddress}
+                </Typography>
+                <Typography variant="subtitle1" align="center">
+                  {coordinatorPhone}
+                </Typography>
+                <Typography variant="subtitle1" align="center">
+                  (Coordinator)
+                </Typography>
+              </Grid>
+            </Grid>
+          </Box>
+
+          <Box>
+            <Grid container>
+              <Grid item sx={{ flex: 0.5 }}>
+                <Grid container alignItems="center">
+                  <Grid item>
+                    <LockClock />
+                  </Grid>
+                  <Grid item>
+                    <Grid>
+                      <Typography
+                        varaint="subtitle1"
+                        sx={{ color: config.dark }}
+                      >
+                        {new Date().toLocaleDateString()}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item sx={{ flex: 0.5 }}>
+                <Grid container alignItems="center">
+                  <Grid item>
+                    <LocalLibrary />
+                  </Grid>
+                  <Grid item>
+                    <Grid>
+                      <Typography
+                        varaint="subtitle1"
+                        sx={{ color: config.dark }}
+                      >
+                        {122}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Box>
+          <Box className={classes.enrollmentButtonBox}>
+            <Button onClick={onEnroll}>Enroll Now</Button>
+          </Box>
+        </Container>
+      </Box>
+    </AutoScrollContainer>
+  );
+};
+
+const useStyles = makeStyles((theme) => ({
+  coordinatorInfoBox: {
+    backgroundColor: config.colors.light,
+    padding: theme.spacing(5),
+    borderRadius: 10,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  descriptionBox: {},
+  enrollmentButtonBox: {
+    paddingTop: theme.spacing(3),
+    paddingButton: theme.spacing(3),
+  },
+}));
+
+export default CouseDetails;
