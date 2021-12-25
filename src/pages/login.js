@@ -10,6 +10,7 @@ import { makeStyles } from "@mui/styles";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import { logInUser } from "../store/auth";
 import AppTextField from "../components/form/AppTextField";
@@ -22,11 +23,18 @@ const validationSchema = Yup.object().shape({
 const Login = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const { errorMessage, loading } = useSelector((state) => state.auth);
+  const { loginErrorMessage: errorMessage, loading } = useSelector(
+    (state) => state.auth
+  );
+
+  const redirect = () => {
+    history.replace("/enrollments");
+  };
 
   const handleSubmit = (data) => {
-    dispatch(logInUser(data));
+    dispatch(logInUser(data, redirect));
   };
 
   return (
@@ -80,7 +88,11 @@ const Login = () => {
               </Grid> */}
 
               <Grid item>
-                <Button fullWidth variant="text">
+                <Button
+                  fullWidth
+                  variant="text"
+                  onClick={() => history.push("/register")}
+                >
                   Dont have an account?
                 </Button>
               </Grid>

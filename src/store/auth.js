@@ -1,11 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { apiRequest } from "./api";
+import * as authService from "../services/authService";
 
 const slice = createSlice({
   name: "auth",
   initialState: {
     loading: false,
-    errorMessage: "",
+    loginErrorMessage: "",
+    registrationErrorMessage: "",
     data: {},
   },
   reducers: {
@@ -13,23 +15,44 @@ const slice = createSlice({
       state.loading = true;
     },
     userLoggedIn: (state, action) => {
-      console.log(action.payload);
-      state.data = action.payload;
+      const { token } = action.payload;
+      authService.storeToken(token);
+
+      state.data = authService.getCurrentUser();
       state.loading = false;
-      state.errorMessage = "";
+      state.loginErrorMessage = "";
     },
     userLoginFailed: (state, action) => {
       state.loading = false;
-      state.errorMessage = action.payload;
+      state.loginErrorMessage = action.payload;
+    },
+    userRegistrationStarted: (state, action) => {
+      state.loading = true;
+    },
+
+    userRegistered: (state, action) => {
+      state.registrationErrorMessage = "";
+      state.loading = false;
+    },
+    userRegistrationFailed: (state, action) => {
+      state.loading = false;
+      state.registrationErrorMessage = action.payload;
     },
   },
 });
 
 export default slice.reducer;
-const { userLoggedIn, userLoginStarted, userLoginFailed } = slice.actions;
+const {
+  userLoggedIn,
+  userLoginStarted,
+  userLoginFailed,
+  userRegistrationStarted,
+  userRegistrationFailed,
+  userRegistered,
+} = slice.actions;
 
-export const logInUser = (data, callback) => (dispatch) => {
-  dispatch(
+export const logInUser = (data, callback) => async (dispatch, getState) => {
+  await dispatch(
     apiRequest({
       url: "/auth",
       method: "post",
@@ -40,5 +63,25 @@ export const logInUser = (data, callback) => (dispatch) => {
     })
   );
 
-  if (typeof callback === "function") callback();
+  const { auth } = getState();
+  if (!auth.loginErrorMessage && typeof callback === "function") callback();
+};
+
+export const registerUser = (data, callback) => async (dispatch, getState) => {
+  await dispatch(
+    apiRequest({
+      url: "/users",
+      method: "post",
+      data,
+      includeHeaderToken: true,
+      onStart: userRegistrationStarted.type,
+      onSuccess: userRegistered.type,
+      onError: userRegistrationFailed.type,
+      callback,
+    })
+  );
+
+  const { auth } = getState();
+  if (!auth.registrationErrorMessage && typeof callback === "function")
+    callback();
 };

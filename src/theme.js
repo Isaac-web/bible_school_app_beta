@@ -48,6 +48,7 @@ const theme = createTheme({
     MuiTextField: {
       defaultProps: {
         variant: "standard",
+        fullWidth: true,
       },
     },
     MuiInputLabel: {

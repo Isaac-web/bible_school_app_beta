@@ -7,15 +7,15 @@ const Loading = () => {
   return (
     <Lottie
       style={{ marginTop: "3em" }}
-      height={"10em"}
-      width={"10em"}
+      height={"6em"}
+      width={"6em"}
       options={{
         loop: true,
 
         autoplay: true,
         animationData: LoadingAnimationData,
         rendererSettings: {
-          preserveAspectRatio: "xMidYMid Slice",
+          preserveAspectRatio: "xMidYMid slice",
         },
       }}
     />
