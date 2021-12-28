@@ -6,6 +6,7 @@ const theme = createTheme({
     h4: {
       fontWeight: "bold",
       gutterButtom: true,
+      color: "black",
     },
     body1: {
       color: config.colors.dark,

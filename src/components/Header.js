@@ -7,7 +7,7 @@ const Header = () => {
   const classes = useStyles();
   return (
     <>
-      <AppBar>
+      <AppBar sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>Header</Toolbar>
       </AppBar>
       <Box style={{ paddingBottom: "4em" }} className={classes.appbarMargin} />

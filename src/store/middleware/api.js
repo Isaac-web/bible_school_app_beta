@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as authService from "../../services/authService";
+import config from "../../config.json";
 
 import * as actions from "../api";
 
@@ -26,7 +27,7 @@ const api =
     try {
       axios.defaults.headers.common["x-auth-token"] = authService.getToken();
       const response = await axios.request({
-        baseURL: "http://localhost:5000/api",
+        baseURL: config.api.baseURL,
         url,
         method,
         data,

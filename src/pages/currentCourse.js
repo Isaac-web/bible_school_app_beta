@@ -18,6 +18,7 @@ import { makeStyles, useTheme } from "@mui/styles";
 import { Feed, Quiz, ArrowDropUp } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 
+
 import * as actions from "../store/modules";
 import * as enrollmentService from "../services/enrollmentService";
 import AppLinearProgress from "../components/AppLinearProgress";
@@ -26,6 +27,7 @@ import PromptDialog from "../components/PromptDialog";
 import QuizBox from "../components/QuizBox";
 import MobileDrawer from "../components/MobileDrawer";
 import QuizResult from "../components/QuizResult";
+import TitleBanner from "../components/TitleBanner";
 
 const CurrentCourse = () => {
   const classes = useStyles();
@@ -252,14 +254,15 @@ const MainComponent = ({
 
   return (
     <Box>
-      <Box className={classes.banner}>
+      {/* <Box className={classes.banner}>
         <Typography variant="h4" align="center">
           {moduleDetails.title}
         </Typography>
         <Typography variant="h6" align="center">
           {moduleDetails.title}
         </Typography>
-      </Box>
+      </Box> */}
+      <TitleBanner />
 
       {moduleDenied ? (
         <Box>

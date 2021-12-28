@@ -27,13 +27,13 @@ const slice = createSlice({
 export default slice.reducer;
 const { modulesLoaded, loadModulesStarted, loadModulesFailed } = slice.actions;
 
-export const loadModules = () => (dispatch) => {
+export const loadModules = (id) => (dispatch) => {
   const enrollment = enrollmentService.getcurrentEnrollment();
   const course = enrollment.course;
 
   dispatch(
     apiRequest({
-      url: `/modules/all/${course._id}`,
+      url: `/modules/all/${id || course._id}`,
       onStart: loadModulesStarted.type,
       onSuccess: modulesLoaded.type,
       onError: loadModulesFailed.type,
