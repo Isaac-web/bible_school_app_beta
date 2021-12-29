@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { ViewModule, Subscriptions } from "@mui/icons-material";
-import { useHistory } from "react-router-dom";
+import { useHistory, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import * as modulesActions from "../store/modules";
@@ -78,7 +78,9 @@ const Coordinator = () => {
         </Box>
       </Drawer>
 
-      <CoordinatorModules />
+      <Switch>
+        <Route path="/coordinator/course" component={CoordinatorModules} />
+      </Switch>
     </Box>
   );
 };

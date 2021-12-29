@@ -113,6 +113,39 @@ export const saveChanges = () => (dispatch, getState) => {
   );
 };
 
+
+export const uploadBackgroundImage = (data) => (dispatch, getState) => {
+  const {
+    currentModule: { data: currentModule },
+  } = getState();
+
+  console.log(data.get("imageUpload"));
+
+  dispatch(
+    apiRequest({
+      url: `/modules/background/${currentModule._id}`,
+      method: "patch",
+      data,
+      onSuccess: currentModuleLoaded.type,
+    })
+  );
+};
+
+export const uploadDocument = (data) => (dispatch, getState) => {
+  const {
+    currentModule: { data: currentModule },
+  } = getState();
+
+  dispatch(
+    apiRequest({
+      url: `/modules/background/${currentModule._id}`,
+      method: "patch",
+      data,
+      onSuccess: currentModuleLoaded.type,
+    })
+  );
+};
+
 export const deleteQuestion = (questionId, index) => (dispatch, getState) => {
   const {
     currentModule: { data: currentModule },
