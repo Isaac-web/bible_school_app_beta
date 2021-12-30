@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import * as modulesActions from "../store/modules";
 
 import CoordinatorModules from "../components/CoordinatorModules";
+import CoordinatorEnrollments from "../components/CoordinatorEnrollments";
 
 const menuList = [
   { title: "Course", path: "/coordinator/course", Icon: <ViewModule /> },
@@ -80,6 +81,10 @@ const Coordinator = () => {
 
       <Switch>
         <Route path="/coordinator/course" component={CoordinatorModules} />
+        <Route
+          path="/coordinator/enrollments"
+          component={CoordinatorEnrollments}
+        />
       </Switch>
     </Box>
   );

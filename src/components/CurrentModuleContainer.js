@@ -130,7 +130,7 @@ const CurrentModuleContainer = () => {
 
   const handleCloseBgDialog = () => {
     setBgDialogOpen(false);
-    setImagePreview(null);
+    setBackgroundFile(null);
   };
 
   const handleFileChange = ({ target: input }) => {
@@ -142,7 +142,7 @@ const CurrentModuleContainer = () => {
 
   const handleCloseFileDialog = () => {
     setFileDialogOpen(false);
-    setImagePreview(null);
+    setFile(null);
   };
 
   if (loading) return <Loading />;
