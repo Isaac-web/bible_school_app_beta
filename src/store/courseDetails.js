@@ -30,7 +30,9 @@ const { courseDetailsLoaded, courseLoadFailed, courseDetailsLoadStarted } =
 export const loadCourseDetails = (courseId) =>
   apiRequest({
     url: `/courses/${courseId}`,
-    onStart: courseDetailsLoadStarted,
+    onStart: courseDetailsLoadStarted.type,
     onSuccess: courseDetailsLoaded.type,
-    onError: courseLoadFailed,
+    onError: courseLoadFailed.type,
   });
+
+

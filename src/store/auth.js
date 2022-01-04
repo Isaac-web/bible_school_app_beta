@@ -12,6 +12,7 @@ const slice = createSlice({
   },
   reducers: {
     userLoginStarted: (state, action) => {
+      state.loginErrorMessage = "";
       state.loading = true;
     },
     userLoggedIn: (state, action) => {
@@ -27,6 +28,7 @@ const slice = createSlice({
       state.loginErrorMessage = action.payload;
     },
     userRegistrationStarted: (state, action) => {
+      state.registrationErrorMessage = ""
       state.loading = true;
     },
 
@@ -84,4 +86,11 @@ export const registerUser = (data, callback) => async (dispatch, getState) => {
   const { auth } = getState();
   if (!auth.registrationErrorMessage && typeof callback === "function")
     callback();
+};
+
+
+export const logoutUser = (callback) => {
+  authService.clear();
+
+  callback();
 };

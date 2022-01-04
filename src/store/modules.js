@@ -42,11 +42,11 @@ const { modulesLoaded, loadModulesStarted, loadModulesFailed, moduleAdded } =
 
 export const loadModules = (id) => (dispatch) => {
   const enrollment = enrollmentService.getcurrentEnrollment();
-  const course = enrollment.course;
+  const course = enrollment?.course;
 
   dispatch(
     apiRequest({
-      url: `/modules/all/${id || course._id}`,
+      url: `/modules/all/${id || course?._id}`,
       onStart: loadModulesStarted.type,
       onSuccess: modulesLoaded.type,
       onError: loadModulesFailed.type,

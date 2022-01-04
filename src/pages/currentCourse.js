@@ -28,6 +28,7 @@ import QuizBox from "../components/QuizBox";
 import MobileDrawer from "../components/MobileDrawer";
 import QuizResult from "../components/QuizResult";
 import TitleBanner from "../components/TitleBanner";
+import * as downloadService from "../services/downloadService";
 
 const CurrentCourse = () => {
   const classes = useStyles();
@@ -216,6 +217,13 @@ const MainComponent = ({
   );
   const { data: quizResults } = useSelector((state) => state.quiz);
 
+  const handleDownload = () => {
+    const filepath = currentModule.fileUri;
+    const filename = filepath.replace("uploads\\files\\", "");
+    
+    downloadService.downloadFile(filepath, filename);    
+  };
+
   let isModuleCovered =
     currentEnrollment.coveredModules.indexOf(currentModule._id) > -1
       ? true
@@ -254,15 +262,7 @@ const MainComponent = ({
 
   return (
     <Box>
-      {/* <Box className={classes.banner}>
-        <Typography variant="h4" align="center">
-          {moduleDetails.title}
-        </Typography>
-        <Typography variant="h6" align="center">
-          {moduleDetails.title}
-        </Typography>
-      </Box> */}
-      <TitleBanner />
+      <TitleBanner backgroundImageUri={currentModule.imageUri} />
 
       {moduleDenied ? (
         <Box>
@@ -273,7 +273,9 @@ const MainComponent = ({
             className={classes.moduleButtonsWrapper}
           >
             <Grid item>
-              <Button startIcon={<Feed />}>Download </Button>
+              <Button startIcon={<Feed />} onClick={handleDownload}>
+                Download{" "}
+              </Button>
             </Grid>
             <Grid item>
               <Button

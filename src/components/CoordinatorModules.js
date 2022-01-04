@@ -21,6 +21,7 @@ import AppDialog from "./AppDialog";
 import * as authService from "../services/authService";
 import CurrentModuleContainer from "./CurrentModuleContainer";
 
+
 const CoordinatorModules = () => {
   const drawerWidth = 240;
   const classes = useStyles();
@@ -33,7 +34,7 @@ const CoordinatorModules = () => {
 
   return (
     <Container
-      style={{ paddingLeft: drawerWidth + 10 }}
+      // style={{ paddingLeft: drawerWidth + 10 }}
       className={classes.container}
     >
       <Box className={classes.main}>

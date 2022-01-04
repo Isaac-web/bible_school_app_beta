@@ -4,7 +4,7 @@ import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
 import config from "../config.json";
 
-const TitleBanner = ({ backgroundImageUri }) => {
+const TitleBanner = ({ title, subtitle, backgroundImageUri }) => {
   const classes = useStyles();
   const { data: currentModuleDetails } = useSelector(
     (state) => state.currentModule
@@ -25,10 +25,10 @@ const TitleBanner = ({ backgroundImageUri }) => {
       }}
     >
       <Typography variant="h4" align="center" className={classes.title}>
-        {currentModuleDetails.title}
+        {title || currentModuleDetails.title}
       </Typography>
       <Typography variant="h6" align="center" className={classes.subtitle}>
-        {currentModuleDetails.subtitle}
+        {subtitle || currentModuleDetails.subtitle}
       </Typography>
     </Box>
   );

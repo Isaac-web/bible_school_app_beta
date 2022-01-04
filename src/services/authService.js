@@ -6,9 +6,16 @@ export const storeToken = (token) => {
 
 export const getCurrentUser = () => {
   const token = localStorage.getItem("token");
-  return jwtDecode(token);
+
+  if (token) return jwtDecode(token);
+
+  return null;
 };
 
 export const getToken = () => {
   return localStorage.getItem("token");
+};
+
+export const clear = () => {
+  localStorage.clear();
 };

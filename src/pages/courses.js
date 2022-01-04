@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Container,
@@ -10,7 +10,6 @@ import {
 import { makeStyles } from "@mui/styles";
 import { Search } from "@mui/icons-material";
 import { useHistory, useLocation } from "react-router-dom";
-import queryString from "query-string";
 import { useDispatch, useSelector } from "react-redux";
 
 import CourseCard from "../components/CourseCard";
@@ -57,16 +56,26 @@ const Courses = () => {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [searchResults, setSearchResults] = useState([]);
 
   const { data: courses } = useSelector((state) => state.entities.courses);
 
   const handleRouteChange = (courseId) => {
-    history.push(`courses/${courseId}`);
+    history.push(`courses/details/${courseId}`);
+  };
+
+  const handleSearch = ({ target: input }) => {
+    const results = courses.filter((item) =>
+      item.title.trim().toLowerCase().includes(input.value.trim().toLowerCase())
+    );
+    setSearchResults(results);
   };
 
   useEffect(() => {
     dispatch(loadCourses());
   }, []);
+
+  const finalData = searchResults.length ? searchResults : courses;
 
   return (
     <AutoScrollContainer>
@@ -80,6 +89,7 @@ const Courses = () => {
                     className={classes.searchInput}
                     fullWidth
                     placeholder="Search courses by title..."
+                    onChange={handleSearch}
                     startAdornment={
                       <InputAdornment position="start">
                         <Search />
@@ -99,7 +109,7 @@ const Courses = () => {
                     All Courses
                   </Typography>
                   <Typography variant="subtitle1" align="center">
-                    10 courses to explore, enroll and complete
+                    Courses to explore, enroll and complete
                   </Typography>
                 </Grid>
               </Grid>
@@ -108,7 +118,7 @@ const Courses = () => {
         </Box>
         <Container>
           <Grid container spacing={4}>
-            {courses.map((item) => (
+            {finalData.map((item) => (
               <CourseCard
                 key={item._id}
                 title={item.title}

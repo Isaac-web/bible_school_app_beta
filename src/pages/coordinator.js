@@ -16,9 +16,11 @@ import { useHistory, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import * as modulesActions from "../store/modules";
+import * as authService from "../services/authService";
 
 import CoordinatorModules from "../components/CoordinatorModules";
 import CoordinatorEnrollments from "../components/CoordinatorEnrollments";
+import * as enrollmentActions from "../store/enrollments";
 
 const menuList = [
   { title: "Course", path: "/coordinator/course", Icon: <ViewModule /> },
@@ -40,12 +42,16 @@ const Coordinator = () => {
   };
 
   useEffect(() => {
-    dispatch(modulesActions.loadModules());
+    const coordinator = authService.getCurrentUser();
+
+    if (!coordinator) return;
+
+    dispatch(modulesActions.loadModules(coordinator.courseId));
   }, []);
 
   return (
     <Box sx={{ display: "flex" }}>
-      <Drawer
+      {/* <Drawer
         variant="permanent"
         anchor="left"
         open={true}
@@ -77,7 +83,7 @@ const Coordinator = () => {
             ))}
           </List>
         </Box>
-      </Drawer>
+      </Drawer> */}
 
       <Switch>
         <Route path="/coordinator/course" component={CoordinatorModules} />

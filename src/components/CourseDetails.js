@@ -12,43 +12,31 @@ import { makeStyles } from "@mui/styles";
 
 import AutoScrollContainer from "./AutoScrollContainer";
 import config from "../config.json";
+import * as authService from "../services/authService";
+import TitleBanner from "../components/TitleBanner";
 
 const CouseDetails = ({
   title,
+  imageUri,
   coordinatorName,
   coordinatorAddress,
   coordinatorPhone,
   onEnroll,
+  numberOfEnrollments,
 }) => {
   const classes = useStyles();
+  const user = authService.getCurrentUser();
+
   return (
     <AutoScrollContainer>
       <Box style={{ marginBottom: "2em" }}>
-        <Box
-          style={{
-            background:
-              "linear-gradient(rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.2))",
-            marginBottom: "1em",
-          }}
-        >
-          <Grid
-            container
-            style={{ height: "14em" }}
-            justifyContent={"center"}
-            alignItems="center"
-          >
-            <Typography variant="h4">{title}</Typography>
-          </Grid>
-        </Box>
+        <TitleBanner title={title} backgroundImageUri={imageUri} />
         <Container maxWidth="sm">
           <Box className={classes.descriptionBox}>
             <Typography varaint="body1">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Id alias
-              mollitia, odit modi placeat aspernatur harum sint eos non quisquam
-              vel nobis ut. Corrupti, aspernatur architecto. Repellat asperiores
-              et officiis veritatis officia libero. Consectetur, dolor. Alias
-              deserunt natus, tenetur veritatis accusantium illum unde, nesciunt
-              sit excepturi tempora labore aperiam dolore.
+              {user
+                ? "Click on the enroll button below to get started in this course."
+                : "Please create an account to get started."}
             </Typography>
           </Box>
           <Box className={classes.coordinatorInfoBox}>
@@ -108,7 +96,7 @@ const CouseDetails = ({
                         varaint="subtitle1"
                         sx={{ color: config.dark }}
                       >
-                        {122}
+                        {numberOfEnrollments}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -117,7 +105,7 @@ const CouseDetails = ({
             </Grid>
           </Box>
           <Box className={classes.enrollmentButtonBox}>
-            <Button onClick={onEnroll}>Enroll Now</Button>
+            {user && <Button onClick={onEnroll}>Enroll Now</Button>}
           </Box>
         </Container>
       </Box>

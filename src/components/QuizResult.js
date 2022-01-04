@@ -60,7 +60,7 @@ const QuizResult = () => {
 
         <Grid item>
           <Typography gutterBottom variant="body1">
-            Your score is below the passmark
+            Your score is below the passmark (70%)
           </Typography>
           <Typography
             align="center"

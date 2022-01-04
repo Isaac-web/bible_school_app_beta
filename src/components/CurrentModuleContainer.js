@@ -123,7 +123,7 @@ const CurrentModuleContainer = () => {
     formData.append("fileUpload", file);
 
     dispatch(currentmoduleActions.uploadDocument(formData));
-    handleCloseBgDialog();
+    handleCloseFileDialog();
   };
 
   const handleOpenBgDialog = () => setBgDialogOpen(true);

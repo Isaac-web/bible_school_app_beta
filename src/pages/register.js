@@ -39,8 +39,14 @@ const Register = () => {
     (state) => state.auth
   );
 
+
+
+  const redirect = () => {
+    history.push("/courses");
+  };
+
   const handleSignUp = (data) => {
-    dispatch(registerUser(data));
+    dispatch(registerUser(data, redirect));
   };
 
   return (

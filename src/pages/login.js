@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 
 import { logInUser } from "../store/auth";
 import AppTextField from "../components/form/AppTextField";
+import * as authService from "../services/authService";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string().email().required().label("Username"),
@@ -30,7 +31,24 @@ const Login = () => {
   );
 
   const redirect = () => {
-    history.replace("/enrollments");
+    const { status } = authService.getCurrentUser();
+    if (!status) return;
+
+    let path = "";
+    switch (status) {
+      case "admin":
+        path = "/admin";
+        break;
+      case "coordinator":
+        path = "/coordinator";
+        break;
+
+      default:
+        path = "/enrollments";
+        break;
+    }
+
+    history.replace(path);
   };
 
   const handleSubmit = (data) => {
@@ -80,12 +98,6 @@ const Login = () => {
                   {!loading && "Login"}
                 </Button>
               </Grid>
-
-              {/* <Grid item>
-                <Button fullWidth variant="outlined">
-                  Continue With Google
-                </Button>
-              </Grid> */}
 
               <Grid item>
                 <Button

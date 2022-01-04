@@ -11,11 +11,12 @@ import { makeStyles } from "@mui/styles";
 import EnrollmentCard from "../components/EnrollmentCard";
 import { loadEnrollments } from "../store/enrollments";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 import Loading from "../components/Loading";
 import config from "../config.json";
 import * as enrollmentSerivce from "../services/enrollmentService";
+import * as authService from "../services/authService";
 
 const Enrollments = () => {
   const classes = useStyles();
@@ -49,19 +50,20 @@ const Enrollments = () => {
   };
 
   useEffect(() => {
-    dispatch(loadEnrollments());
+    const user = authService.getCurrentUser();
+    dispatch(loadEnrollments(user?._id));
   }, []);
 
   if (loading) return <Loading />;
 
   if (!enrollments.length)
     return (
-      <Container>
+      <Container sx={{ paddingTop: "3em" }}>
         <Typography align="center" variant="h5">
           No Enrollment Yet
         </Typography>
         <Typography align="center" variant="body2">
-          Visit the courses page to enroll
+          <Link to="/courses">Visit the courses page to enroll</Link>
         </Typography>
       </Container>
     );
@@ -72,6 +74,9 @@ const Enrollments = () => {
       <Grid container className={classes.topContainer} alignItems="center">
         <Grid item xs={12} sm={6}>
           <Typography variant="h4">My Courses</Typography>
+          <Typography variant="subtitle2" component={Link} to="/courses">
+            View all courses
+          </Typography>
         </Grid>
         <Grid item xs={12} sm={6}>
           <InputBase
