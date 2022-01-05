@@ -38,26 +38,22 @@ const CourseDetails = () => {
     dispatch(loadCourseDetails(id));
   }, []);
 
-  useEffect(() => {
-    console.log(course);
-  }, [course]);
+  useEffect(() => {}, [course]);
 
   return loading ? (
     <Loading />
   ) : (
     <>
       {course && (
-        <Fade>
-          <CourseDetailsComponent
-            title={course.title}
-            imageUri={course.imageUri}
-            numberOfEnrollments={course.enrollments || 0}
-            coordinatorName={`${course?.coordinator?.firstname} ${course?.coordinator?.lastname}`}
-            coordinatorAddress={course?.coordinator?.address}
-            coordinatorPhone={course?.coordinator?.email}
-            onEnroll={() => handleEnroll(course._id)}
-          />
-        </Fade>
+        <CourseDetailsComponent
+          title={course.title}
+          imageUri={course.imageUri}
+          numberOfEnrollments={course.enrollments || 0}
+          coordinatorName={`${course?.coordinator?.firstname} ${course?.coordinator?.lastname}`}
+          coordinatorAddress={course?.coordinator?.address}
+          coordinatorPhone={course?.coordinator?.email}
+          onEnroll={() => handleEnroll(course._id)}
+        />
       )}
     </>
   );

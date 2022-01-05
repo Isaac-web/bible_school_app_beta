@@ -2,17 +2,19 @@ import React, { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useSelector } from "react-redux";
-import config from "../config.json";
+import { getFilePath } from "../utils/filePath";
 
-const TitleBanner = ({ title, subtitle, backgroundImageUri }) => {
+const TitleBanner = ({
+  title,
+  subtitle,
+  hideSubtitle = false,
+  backgroundImageUri,
+}) => {
   const classes = useStyles();
   const { data: currentModuleDetails } = useSelector(
     (state) => state.currentModule
   );
-
-  backgroundImageUri = backgroundImageUri?.replaceAll("\\", "/");
-  const filesBaseURL = config.api.filesBaseURL;
-  const imagePath = `${filesBaseURL}${backgroundImageUri}`;
+  const imagePath = getFilePath(backgroundImageUri);
 
   useEffect(() => {}, [currentModuleDetails]);
   return (
@@ -27,9 +29,11 @@ const TitleBanner = ({ title, subtitle, backgroundImageUri }) => {
       <Typography variant="h4" align="center" className={classes.title}>
         {title || currentModuleDetails.title}
       </Typography>
-      <Typography variant="h6" align="center" className={classes.subtitle}>
-        {subtitle || currentModuleDetails.subtitle}
-      </Typography>
+      {!hideSubtitle && (
+        <Typography variant="h6" align="center" className={classes.subtitle}>
+          {subtitle || currentModuleDetails.subtitle}
+        </Typography>
+      )}
     </Box>
   );
 };

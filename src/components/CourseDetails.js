@@ -5,10 +5,11 @@ import {
   Grid,
   Typography,
   Button,
+  useMediaQuery,
   Avatar,
 } from "@mui/material";
 import { LocalLibrary, LockClock } from "@mui/icons-material";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, useTheme } from "@mui/styles";
 import { useSelector } from "react-redux";
 
 import AutoScrollContainer from "./AutoScrollContainer";
@@ -27,15 +28,16 @@ const CouseDetails = ({
 }) => {
   const classes = useStyles();
   const user = authService.getCurrentUser();
-  console.log(useSelector((state) => state.courseDetails));
+  const theme = useTheme();
+  const matchesXS = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <AutoScrollContainer>
       <Box style={{ marginBottom: "2em" }}>
-        <TitleBanner title={title} backgroundImageUri={imageUri} />
-        <Container maxWidth="sm">
+        <TitleBanner title={title} hideSubtitle backgroundImageUri={imageUri} />
+        <Container maxWidth="sm" sx={{ padding: `2em 1em` }}>
           <Box className={classes.descriptionBox}>
-            <Typography varaint="body1">
+            <Typography varaint="body1" align="center">
               {user
                 ? "Click on the enroll button below to get started in this course."
                 : "Please create an account to get started."}

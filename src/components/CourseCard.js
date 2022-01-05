@@ -9,8 +9,7 @@ import {
 } from "@mui/material";
 import { LocalLibrary } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
-
-import config from "../config.json";
+import { getFilePath } from "../utils/filePath";
 
 const CourseCard = ({
   title,
@@ -21,16 +20,12 @@ const CourseCard = ({
   ...rest
 }) => {
   const classes = useStyles();
-
-
-  imageUri = imageUri?.replaceAll("\\", "/");
-  const filesBaseURL = config.api.filesBaseURL;
-  const imagePath = `${filesBaseURL}${imageUri}`;
+  const imagePath = getFilePath(imageUri);
 
   return (
     <Grid item xs={12} sm={6} lg={4}>
       <Card sx={{ cursor: "pointer" }} {...rest}>
-        <CardMedia className={classes.cardMedia} image={imagePath||"/none"} />
+        <CardMedia className={classes.cardMedia} image={imagePath || "/none"} />
         <CardContent>
           <Grid container direction="column">
             <Grid item>

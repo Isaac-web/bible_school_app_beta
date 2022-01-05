@@ -8,12 +8,14 @@ const slice = createSlice({
     loading: false,
     awaiting: false,
     isSaved: true,
+    errorMessage: "",
     data: {
       id: undefined,
     },
   },
   reducers: {
     currentModuleLoadStarted: (currentModule, action) => {
+      currentModule.errorMessage = "";
       currentModule.loading = true;
     },
     currentModuleLoaded: (currentModule, action) => {
@@ -21,6 +23,7 @@ const slice = createSlice({
       currentModule.loading = false;
     },
     currentModuleLoadFailed: (currentModule, action) => {
+      currentModule.errorMessage = action.payload;
       currentModule.loading = false;
     },
     currentModuleRevoked: (currentModule, action) => {
@@ -70,7 +73,6 @@ const {
   currentModuleLoaded,
   currentModuleLoadStarted,
   currentModuleLoadFailed,
-  currentModuleRevoked,
   currentModuleDeleteStarted,
   currentModuleDeleted,
   currentModuleDeletedFailed: currentModuleDeleteFailed,
@@ -174,19 +176,21 @@ export const deleteQuestion = (questionId, index) => (dispatch, getState) => {
   dispatch(questionDeleted({ index }));
 };
 
-export const deleteCurrentModule = (id, callback) => async (dispatch) => {
-  console.log(id);
+export const deleteCurrentModule =
+  (id, callback) => async (dispatch, getState) => {
+    const { currentModule } = getState();
+    console.log(currentModule);
 
-  // await dispatch(
-  //   apiRequest({
-  //     url: `/modules${id}`,
-  //     method: "delete",
-  //     onStart: currentModuleDeleteStarted.type,
-  //     onSuccess: currentModuleDeleted.type,
-  //     onError: currentModuleDeleteFailed.type,
-  //   })
-  // );
+    await dispatch(
+      apiRequest({
+        url: `/modules${id}`,
+        method: "delete",
+        onStart: currentModuleDeleteStarted.type,
+        onSuccess: currentModuleDeleted.type,
+        onError: currentModuleDeleteFailed.type,
+      })
+    );
 
-  if (typeof callback === "function") callback();
-};
+    if (typeof callback === "function") callback();
+  };
 

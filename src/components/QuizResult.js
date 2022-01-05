@@ -11,9 +11,9 @@ const QuizResult = () => {
   const { currentModule } = enrollmentService.getcurrentEnrollment();
   const { data } = useSelector((state) => state.quiz);
 
-  const formattedScore = data.score.toFixed(1) * 100;
+  const formattedScore = data?.score?.toFixed(1) * 100 || 0;
 
-  const score = data.score > 0 ? data.score.toFixed(1) : 0;
+  const score = data?.score > 0 ? data?.score?.toFixed(1) : 0;
 
   const handleNextModule = () => {
     dispatch(currentModuleActions.loadCurrentModule(currentModule));

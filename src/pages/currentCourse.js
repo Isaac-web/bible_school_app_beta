@@ -29,6 +29,7 @@ import MobileDrawer from "../components/MobileDrawer";
 import QuizResult from "../components/QuizResult";
 import TitleBanner from "../components/TitleBanner";
 import * as downloadService from "../services/downloadService";
+import { getFileName, getFilePath } from "../utils/filePath";
 
 const CurrentCourse = () => {
   const classes = useStyles();
@@ -218,10 +219,11 @@ const MainComponent = ({
   const { data: quizResults } = useSelector((state) => state.quiz);
 
   const handleDownload = () => {
-    const filepath = currentModule.fileUri;
-    const filename = filepath.replace("uploads\\files\\", "");
-    
-    downloadService.downloadFile(filepath, filename);    
+    const path = getFilePath(currentModule?.fileUri);
+    const filename = getFileName(currentModule?.fileUri);
+    if (!path || !filename) return;
+
+    downloadService.downloadFile(path, filename);
   };
 
   let isModuleCovered =
@@ -274,7 +276,7 @@ const MainComponent = ({
           >
             <Grid item>
               <Button startIcon={<Feed />} onClick={handleDownload}>
-                Download{" "}
+                Download
               </Button>
             </Grid>
             <Grid item>

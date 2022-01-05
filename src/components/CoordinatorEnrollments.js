@@ -59,7 +59,7 @@ const CoordinatorEnrollments = () => {
           fullWidth
           onChange={handleSearch}
           startAdornment={
-            <InputAdornment sx={{ padding: "0 10px" }}>
+            <InputAdornment position="start" sx={{ padding: "0 10px" }}>
               <Search />
             </InputAdornment>
           }
@@ -79,15 +79,15 @@ const CoordinatorEnrollments = () => {
             </TableRow>
           </TableHead>
 
-          {enrollments.map((item) => (
-            <TableBody>
-              <TableRow>
+          <TableBody>
+            {enrollments?.map((item) => (
+              <TableRow key={item._id}>
                 <TableCell>{`${item.user.firstname} ${item.user.lastname}`}</TableCell>
                 <TableCell>{item.course.title}</TableCell>
                 <TableCell>{item.status}</TableCell>
               </TableRow>
-            </TableBody>
-          ))}
+            ))}
+          </TableBody>
         </Table>
       )}
     </Container>

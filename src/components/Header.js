@@ -44,7 +44,7 @@ const Header = () => {
   return (
     <>
       <AppBar sx={{ zIndex: (theme) => theme.zIndex.drawer }}>
-        <Toolbar>
+        <Toolbar sx={{ color: (theme) => theme.palette.primary.main }}>
           Header
           <Box sx={{ marginLeft: "auto", display: "flex" }}>
             <AuthBox />
@@ -210,13 +210,14 @@ const MenuList = ({ menu = [], onItemClick = () => {} }) => {
     <List>
       {menu?.map((item) => (
         <Link
+          key={item.link}
           onClick={onItemClick}
           to={item.link || "/"}
           style={{ textDecoration: "none" }}
         >
           <ListItem>
             <ListItemIcon>{item.Icon}</ListItemIcon>
-            <ListItemText button primary={item.label} />
+            <ListItemText button="true" primary={item.label} />
           </ListItem>
         </Link>
       ))}

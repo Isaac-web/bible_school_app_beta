@@ -26,15 +26,10 @@ const slice = createSlice({
 
     deleteModuleStarted: (modules, action) => {
       modules.awating = true;
+      console.log("Hello World");
     },
     moduleDeleted: (modules, action) => {
-      // const index = module.data.findIndex(
-      //   (item) => item._id === action.payload
-      // );
-
-      // modules.data.splice(index, 1);
-      console.log(modules);
-      modules.awaiting = false;
+      console.log("Hello World", modules.data[0]);
     },
     deleteMOduleFailed: (modules, action) => {
       modules.awaiting = false;

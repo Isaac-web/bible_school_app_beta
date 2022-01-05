@@ -1,5 +1,5 @@
 import { Switch, Route, Redirect } from "react-router-dom";
-import { CssBaseline, Snackbar } from "@mui/material";
+import { Box, CssBaseline, Snackbar } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 
 import Courses from "./pages/courses";
@@ -37,22 +37,24 @@ const App = () => {
       />
       <CssBaseline />
       <Header />
-      <Switch>
-        <CoordinatorRoute path="/coordinator" component={Coordinator} />
-        <Route path="/courses/take/:id" component={CurrentCourse} />
-        <Route path="/courses/details/:id" component={CourseDetails} />
-        <Route path="/courses/" component={Courses} />
-        <Route path="/enrollments" component={Enrollments} />
-        <AdminRoute path="/admin" component={Admin} />
-        <Route path="/login" component={Login} />
-        <Route path="/register" component={Register} />
-        <Route path="/home" component={Home} />
-        <Route path="/not-found" component={NotFound} />
-        <Route path="/access-denied" component={AccessDenied} />
-        <Redirect from="/" exact to="/home" />
-        <Redirect to="/not-found" />
-      </Switch>
-      <Footer/>
+      <Box sx={{ minHeight: "85vh" }}>
+        <Switch>
+          <CoordinatorRoute path="/coordinator" component={Coordinator} />
+          <Route path="/courses/take/:id" component={CurrentCourse} />
+          <Route path="/courses/details/:id" component={CourseDetails} />
+          <Route path="/courses/" component={Courses} />
+          <Route path="/enrollments" component={Enrollments} />
+          <AdminRoute path="/admin" component={Admin} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+          <Route path="/home" component={Home} />
+          <Route path="/not-found" component={NotFound} />
+          <Route path="/access-denied" component={AccessDenied} />
+          <Redirect from="/" exact to="/home" />
+          <Redirect to="/not-found" />
+        </Switch>
+      </Box>
+      <Footer />
     </>
   );
 };

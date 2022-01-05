@@ -114,8 +114,9 @@ const Courses = () => {
 const useStyles = makeStyles((theme) => ({
   searchInput: {
     padding: "0.8em",
-    boxShadow: "0 0 8px rgba(0, 0, 0, 0.1)",
-    borderRadius: 10,
+    boxShadow: "0 0 8px rgba(0, 0, 0, 0.12)",
+    borderRadius: 8,
+    minWidth: 300,
   },
   searchAreaTextBox: {
     padding: "3em 0",

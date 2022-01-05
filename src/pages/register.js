@@ -42,7 +42,7 @@ const Register = () => {
 
 
   const redirect = () => {
-    history.push("/courses");
+    history.push("/login");
   };
 
   const handleSignUp = (data) => {

@@ -66,11 +66,10 @@ const {
 } = slice.actions;
 
 export const loadCourses = () => (dispatch, getState) => {
-  const lastFetched = getState();
-  if (lastFetched) {
-    const timeDiff = moment().diff(moment(lastFetched), "minutes");
-    console.log(timeDiff);
-  }
+  // const lastFetched = getState();
+  // if (lastFetched) {
+  //   const timeDiff = moment().diff(moment(lastFetched), "minutes");
+  // }
 
   dispatch(
     apiActions.apiRequest({

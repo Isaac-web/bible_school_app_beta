@@ -28,7 +28,7 @@ const QuestionBox = ({ question, objectives, answer, onAnswerChange }) => {
         {objectives.map((ans, index) => (
           <RadioGroup value={answer?.trim()}>
             <FormControlLabel
-              key={ans}
+              key={ans + index || index}
               label={ans}
               control={<Radio />}
               value={ans?.trim()}

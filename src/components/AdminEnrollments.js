@@ -19,6 +19,7 @@ import Empty from "../components/Empty";
 import * as enrollmentActions from "../store/enrollments";
 import config from "../config.json";
 import NoMatchFound from "../components/NoMatchFound";
+import Loading from "../components/Loading";
 
 const AdminEnrollments = () => {
   return (
@@ -36,12 +37,12 @@ const AdminEnrollments = () => {
 
 export default AdminEnrollments;
 
-const EnrollmentLists = ({ data }) => {
+const EnrollmentLists = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setsearchResults] = useState([]);
 
   const dispatch = useDispatch();
-  const { data: enrollments } = useSelector(
+  const { data: enrollments, loading } = useSelector(
     (state) => state.entities.enrollments
   );
 
@@ -63,6 +64,8 @@ const EnrollmentLists = ({ data }) => {
   }, []);
 
   const finalData = searchResults.length ? searchResults : enrollments;
+
+  if (loading) return <Loading />;
 
   if (!enrollments.length) return <Empty />;
 

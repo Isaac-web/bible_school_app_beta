@@ -21,6 +21,7 @@ import * as moduleActions from "../store/modules";
 import AppDialog from "./AppDialog";
 import * as authService from "../services/authService";
 import CurrentModuleContainer from "./CurrentModuleContainer";
+import Empty from "./Empty";
 
 const CoordinatorModules = () => {
   const classes = useStyles();
@@ -50,7 +51,8 @@ const ModuleListBox = () => {
   const { data: currentModule } = useSelector((state) => state.currentModule);
   const currentItem = currentModule._id;
   const {
-    data: { modules }, loading
+    data: { modules },
+    loading,
   } = useSelector((state) => state.entities.modules);
 
   const handleLoadCurrentModule = (id) => {
@@ -77,28 +79,32 @@ const ModuleListBox = () => {
 
   return (
     <Box>
-      <List>
-        {modules?.map((m) => (
-          <ListItem
-            key={m._id}
-            className={`${classes.sidebarListItem} ${
-              currentItem === m._id ? classes.activeSidebarListItem : ""
-            }`}
-            onClick={() => handleLoadCurrentModule(m._id)}
-          >
-            <ListItemText
-              primary={m.title}
-              classes={{
-                primary: `${classes.sidebarListItemPrimaryText} ${
-                  currentItem === m._id
-                    ? classes.activeSidebarListItemPrimaryText
-                    : ""
-                }`,
-              }}
-            />
-          </ListItem>
-        ))}
-      </List>
+      {!modules?.length ? (
+        <Empty />
+      ) : (
+        <List>
+          {modules?.map((m) => (
+            <ListItem
+              key={m._id}
+              className={`${classes.sidebarListItem} ${
+                currentItem === m._id ? classes.activeSidebarListItem : ""
+              }`}
+              onClick={() => handleLoadCurrentModule(m._id)}
+            >
+              <ListItemText
+                primary={m.title}
+                classes={{
+                  primary: `${classes.sidebarListItemPrimaryText} ${
+                    currentItem === m._id
+                      ? classes.activeSidebarListItemPrimaryText
+                      : ""
+                  }`,
+                }}
+              />
+            </ListItem>
+          ))}
+        </List>
+      )}
 
       <Fab className={classes.addFab} size={"small"} onClick={handleOpenDialog}>
         <Add />

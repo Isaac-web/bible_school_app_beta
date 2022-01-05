@@ -49,6 +49,7 @@ const Enrollments = () => {
     history.push(`/courses/take/${enrollment?.course?._id}`);
   };
 
+
   useEffect(() => {
     const user = authService.getCurrentUser();
     dispatch(loadEnrollments(user?._id));
@@ -93,12 +94,13 @@ const Enrollments = () => {
         </Grid>
       </Grid>
       <Grid container spacing={4}>
-        {finalData.map((e) => (
+        {finalData.map((item) => (
           <EnrollmentCard
-            key={e._id}
-            title={e.course.title}
-            progress={e.progress}
-            onClick={() => handleResumeCourse(e)}
+            key={item._id}
+            title={item.course.title}
+            imageUri={item.course.imageUri}
+            progress={item.progress}
+            onClick={() => handleResumeCourse(item)}
           />
         ))}
       </Grid>

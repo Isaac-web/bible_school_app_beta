@@ -17,7 +17,8 @@ const slice = createSlice({
     addEnrollmentStarted: (enrollments, action) => {
       enrollments.awaiting = true;
     },
-    enrollmentAdded: (enrollments) => {
+    enrollmentAdded: (enrollments, action) => {
+      enrollments.data.push(action.payload);
       enrollments.awaiting = false;
     },
     addEnrollmentFailed: (enrollments, action) => {
@@ -34,13 +35,11 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-const { enrollmentsLoadStared, enrollmentsLoaded, enrollmentsLoadFailed } =
+const { enrollmentsLoadStared, enrollmentsLoaded, enrollmentsLoadFailed, enrollmentAdded, addEnrollmentFailed, addEnrollmentStarted } =
   slice.actions;
 
 export const loadEnrollments = (userId) => (dispatch) => {
-  console.log(userId);
-
-  if (!userId) return;
+    if (!userId) return;
 
   dispatch(
     apiRequest({
@@ -82,11 +81,13 @@ export const createEnrollment = (data, callback) => async (dispatch) => {
       url: `/enrollments`,
       method: "post",
       data,
+      onStart: addEnrollmentStarted.type,
+      onError: addEnrollmentFailed.type, 
       toastOnError: true,
     })
   );
 
   if (typeof callback === "function") callback();
-};
+};;
 
 

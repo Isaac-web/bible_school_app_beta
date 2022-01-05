@@ -52,12 +52,6 @@ const Home = () => {
           </Grid>
         </Grid>
       </Box>
-
-      <Box className={classes.footer}>
-        <Typography variant="body1" align="center">
-          Copyright @ 2021
-        </Typography>
-      </Box>
     </Box>
   );
 };

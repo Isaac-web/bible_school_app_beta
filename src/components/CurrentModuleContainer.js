@@ -9,7 +9,6 @@ import {
   Typography,
   Paper,
   Tooltip,
-  Chip,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";

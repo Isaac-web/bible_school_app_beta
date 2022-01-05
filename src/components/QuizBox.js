@@ -49,7 +49,7 @@ const QuizBox = () => {
       <Box className={classes.container}>
         {currentModule.questions.map((q, index) => (
           <QuestionBox
-            key={q._id || index}
+            key={q._id + index || index}
             question={q.question}
             objectives={q.objectives}
             answer={q.ans.trim()}

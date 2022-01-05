@@ -3,9 +3,12 @@ import { makeStyles } from "@mui/styles";
 
 import config from "../config.json";
 import AppLinearProgress from "./AppLinearProgress";
+import { getFilePath } from "../utils/filePath";
 
-const EnrollmentCard = ({ title, progress, ...rest }) => {
+const EnrollmentCard = ({ title, progress, imageUri, ...rest }) => {
   const classes = useStyles();
+
+  const imagePath = getFilePath(imageUri);
 
   return (
     <Grid item xs={12} sm={6} lg={4}>
@@ -15,7 +18,10 @@ const EnrollmentCard = ({ title, progress, ...rest }) => {
         className={classes.card}
         {...rest}
       >
-        <CardMedia className={classes.cardMedia} src={"image_uri"} />
+        <CardMedia
+          className={classes.cardMedia}
+          image={imagePath || "/no-image"}
+        />
         <CardContent className={classes.cardContent}>
           <AppLinearProgress progress={progress} />
           <Typography variant="h6">{title}</Typography>

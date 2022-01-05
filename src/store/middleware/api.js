@@ -3,6 +3,7 @@ import * as authService from "../../services/authService";
 import config from "../../config.json";
 
 import * as actions from "../api";
+import { showToast } from "../toast";
 
 const api =
   ({ dispatch }) =>
@@ -18,7 +19,7 @@ const api =
       onSuccess,
       onError,
       includeHeaderToken,
-      toastOnError
+      toastOnError,
     } = action.payload;
 
     if (onStart) dispatch({ type: onStart });
@@ -43,8 +44,6 @@ const api =
         payload = response.data;
       }
 
-      
-
       dispatch(actions.apiCallSuccess(response.data));
       if (onSuccess) dispatch({ type: onSuccess, payload });
     } catch (error) {
@@ -56,12 +55,12 @@ const api =
         dispatch({ type: onError, payload: message });
       }
 
-      if(toastOnError) {
+      if (toastOnError) {
         let message = "";
         if (error?.response?.data) message = error.response.data;
         else message = error.message;
         dispatch({ type: onError, payload: message });
-        dispatch({type: "error", payload: message})
+        dispatch(showToast(message));
       }
     }
   };
