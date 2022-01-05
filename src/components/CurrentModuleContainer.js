@@ -9,6 +9,7 @@ import {
   Typography,
   Paper,
   Tooltip,
+  Chip,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,14 +17,16 @@ import { Add, Save, Delete, Image, InsertDriveFile } from "@mui/icons-material";
 
 import config from "../config.json";
 import * as currentmoduleActions from "../store/currentModule";
+import modules, * as modulesActions from "../store/modules";
 import TitleBanner from "./TitleBanner";
 import AppDialog from "./AppDialog";
 import QuestionBox from "./QuestionBox";
 import Loading from "./Loading";
+import PromptDialog from "./PromptDialog";
 
 const CurrentModuleContainer = () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [bgDialogOpen, setBgDialogOpen] = useState(false);
   const [backgroundFile, setBackgroundFile] = useState(null);
@@ -145,6 +148,26 @@ const CurrentModuleContainer = () => {
     setFile(null);
   };
 
+  const handleOpenDeleteDialog = () => {
+    setDeleteDialogOpen(true);
+  };
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+  };
+
+  const handleDeleteModule = () => {
+    const removeModuleFromList = dispatch(
+      modulesActions.removeModuleFromList(currentModule._id)
+    );
+
+    dispatch(
+      currentmoduleActions.deleteCurrentModule(
+        currentModule._id,
+        removeModuleFromList
+      )
+    );
+  };
+
   if (loading) return <Loading />;
 
   if (!currentModule._id) return <NoModuleComponent />;
@@ -174,6 +197,14 @@ const CurrentModuleContainer = () => {
               <Tooltip title={`${currentModule.fileUri || "No file yet."}`}>
                 <IconButton onClick={handleOpenFileDialog}>
                   <InsertDriveFile />
+                </IconButton>
+              </Tooltip>
+            </Grid>
+
+            <Grid item>
+              <Tooltip title={`Delete`}>
+                <IconButton onClick={handleOpenDeleteDialog}>
+                  <Delete sx={{ color: "rgba(225, 0, 0, 0.7)" }} />
                 </IconButton>
               </Tooltip>
             </Grid>
@@ -211,6 +242,14 @@ const CurrentModuleContainer = () => {
                 </Grid>
               </Grid>
             </AppDialog>
+
+            <PromptDialog
+              open={deleteDialogOpen}
+              title={"Delete Module?"}
+              message="Are you sure you want to delete this module? This action cannot be undone."
+              onAccept={handleDeleteModule}
+              onClose={handleCloseDeleteDialog}
+            />
           </Paper>
           <Paper elevation={2}>
             {!currentModule.questions?.length && (
@@ -307,10 +346,11 @@ const CurrentModuleContainer = () => {
 const NoModuleComponent = () => (
   <Box
     style={{
-      padding: "5em 0",
+      padding: "5em",
+      backgroundColor: config.colors.light,
     }}
   >
-    <Typography variant="h4" align="center">
+    <Typography variant="body1" align="center">
       No module Selected
     </Typography>
   </Box>

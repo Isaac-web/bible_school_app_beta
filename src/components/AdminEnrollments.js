@@ -76,7 +76,7 @@ const EnrollmentLists = ({ data }) => {
           onChange={handleSearch}
           placeholder="Search by username..."
           startAdornment={
-            <InputAdornment sx={{ padding: "0 0.3em" }}>
+            <InputAdornment position="end" sx={{ padding: "0 0.3em" }}>
               <Search />
             </InputAdornment>
           }

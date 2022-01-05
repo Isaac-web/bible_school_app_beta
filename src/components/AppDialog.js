@@ -20,8 +20,8 @@ const AppDialog = ({
       <DialogTitle>{title}</DialogTitle>
       <DialogContent>{children}</DialogContent>
       <DialogActions>
-        {dialogActions?.map((item) => (
-          <span>{item.content()}</span>
+        {dialogActions?.map((item, index) => (
+          <span key={item._id || index}>{item.content()}</span>
         ))}
       </DialogActions>
     </Dialog>

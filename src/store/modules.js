@@ -23,6 +23,22 @@ const slice = createSlice({
     addModuleFailed: (modules, action) => {
       modules.awaiting = false;
     },
+
+    deleteModuleStarted: (modules, action) => {
+      modules.awating = true;
+    },
+    moduleDeleted: (modules, action) => {
+      // const index = module.data.findIndex(
+      //   (item) => item._id === action.payload
+      // );
+
+      // modules.data.splice(index, 1);
+      console.log(modules);
+      modules.awaiting = false;
+    },
+    deleteMOduleFailed: (modules, action) => {
+      modules.awaiting = false;
+    },
     loadModulesStarted: (modules, action) => {
       modules.loading = true;
     },
@@ -37,8 +53,13 @@ const slice = createSlice({
 });
 
 export default slice.reducer;
-const { modulesLoaded, loadModulesStarted, loadModulesFailed, moduleAdded } =
-  slice.actions;
+const {
+  modulesLoaded,
+  loadModulesStarted,
+  loadModulesFailed,
+  moduleAdded,
+  moduleDeleted,
+} = slice.actions;
 
 export const loadModules = (id) => (dispatch) => {
   const enrollment = enrollmentService.getcurrentEnrollment();
@@ -65,5 +86,9 @@ export const addModule = (data) => (dispatch) => {
       onSuccess: moduleAdded.type,
     })
   );
+};
+
+export const removeModuleFromList = (id) => (dispatch) => {
+  dispatch(moduleDeleted(id));
 };
 

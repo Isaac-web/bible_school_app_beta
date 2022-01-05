@@ -65,12 +65,9 @@ const Header = () => {
 };
 
 const AuthBox = () => {
-  const id = "auth_poper";
-  const history = useHistory();
   const location = useLocation();
 
   const user = authService.getCurrentUser();
-  const avatarLabel = user?.name?.charAt(0)?.toUpperCase();
 
   useEffect(() => {}, [location.pathname]);
 
@@ -80,7 +77,7 @@ const AuthBox = () => {
       <Box style={{ marginLeft: "auto" }}>
         <Grid container justifyContent={"center"} alignItems="center">
           <Grid item>
-            <Avatar>{avatarLabel}</Avatar>
+            <Avatar src={user.imageUri} />
           </Grid>
         </Grid>
       </Box>
@@ -152,7 +149,10 @@ const MenuDrawer = ({ open, onClose, onOpen }) => {
               alignItems="center"
             >
               <Grid item>
-                <Avatar sx={{ height: "3em", width: "3em" }} />
+                <Avatar
+                  src={user.imageUri}
+                  sx={{ height: "3em", width: "3em" }}
+                />
               </Grid>
               <Grid item>
                 <Chip

@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { CssBaseline, Snackbar } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -14,6 +13,11 @@ import Coordinator from "./pages/coordinator";
 import Admin from "./pages/admin";
 import Home from "./pages/home";
 import { hideToast } from "./store/toast";
+import NotFound from "./components/NotFound";
+import AccessDenied from "./components/AccessDenied";
+import AdminRoute from "./components/AdminRoute";
+import CoordinatorRoute from "./components/CoordinatorRoute";
+import Footer from "./components/Footer";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -34,16 +38,21 @@ const App = () => {
       <CssBaseline />
       <Header />
       <Switch>
-        <Route path="/coordinator" component={Coordinator} />
+        <CoordinatorRoute path="/coordinator" component={Coordinator} />
         <Route path="/courses/take/:id" component={CurrentCourse} />
         <Route path="/courses/details/:id" component={CourseDetails} />
         <Route path="/courses/" component={Courses} />
         <Route path="/enrollments" component={Enrollments} />
-        <Route path="/admin" component={Admin} />
+        <AdminRoute path="/admin" component={Admin} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route path="/" component={Home} />
+        <Route path="/home" component={Home} />
+        <Route path="/not-found" component={NotFound} />
+        <Route path="/access-denied" component={AccessDenied} />
+        <Redirect from="/" exact to="/home" />
+        <Redirect to="/not-found" />
       </Switch>
+      <Footer/>
     </>
   );
 };

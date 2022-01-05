@@ -320,11 +320,6 @@ const ModuleDenied = () => {
           <Typography variant="body1" gutterBottom>
             Please complete the previous modules
           </Typography>
-          <Grid item>
-            <Button onClick={handleLoadCurrentModule} variant="outlined">
-              Back to current module
-            </Button>
-          </Grid>
         </Grid>
       </Grid>
     </Box>

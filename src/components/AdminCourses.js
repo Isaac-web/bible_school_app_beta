@@ -93,7 +93,7 @@ const AdminCourses = () => {
         onChange={handleSearch}
         placeholder="Search by title..."
         startAdornment={
-          <InputAdornment sx={{ padding: "0 0.3em" }}>
+          <InputAdornment position="start" sx={{ padding: "0 0.3em" }}>
             <Search />
           </InputAdornment>
         }

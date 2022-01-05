@@ -44,7 +44,7 @@ const QuizBox = () => {
     <Box>
       <Timer date={quizDuration} onComplete={handleSubmit} />
       <Typography variant="body1" gutterBottom>
-        Choose the correct answers to the follwing questions
+        Choose the correct answers to the follwing questions.
       </Typography>
       <Box className={classes.container}>
         {currentModule.questions.map((q, index) => (

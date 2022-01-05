@@ -15,56 +15,27 @@ import { useDispatch, useSelector } from "react-redux";
 import CourseCard from "../components/CourseCard";
 import AutoScrollContainer from "../components/AutoScrollContainer";
 import { loadCourses } from "../store/courses";
-
-const data = [
-  {
-    _id: "1",
-    title: "Course Title",
-    imageUri: "not-provided",
-    numberOfEnrollments: 122,
-    coordinatorName: "John Doe",
-    coordinatorImageUri: "coordinator image",
-  },
-  {
-    _id: "2",
-    title: "Course Title",
-    imageUri: "not-provided",
-    numberOfEnrollments: 122,
-    coordinatorName: "John Doe",
-    coordinatorImageUri: "coordinator image",
-  },
-  {
-    _id: "3",
-    title: "Course Title",
-    imageUri: "not-provided",
-    numberOfEnrollments: 122,
-    coordinatorName: "John Doe",
-    coordinatorImageUri: "coordinator image",
-  },
-  {
-    _id: "4",
-    title: "Course Title",
-    imageUri: "not-provided",
-    numberOfEnrollments: 122,
-    coordinatorName: "John Doe",
-    coordinatorImageUri: "coordinator image",
-  },
-];
+import Loading from "../components/Loading";
+import NoMatchFound from "../components/NoMatchFound";
 
 const Courses = () => {
   const classes = useStyles();
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [searchInput, setsearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  const { data: courses } = useSelector((state) => state.entities.courses);
+  const { data: courses, loading } = useSelector(
+    (state) => state.entities.courses
+  );
 
   const handleRouteChange = (courseId) => {
     history.push(`courses/details/${courseId}`);
   };
 
   const handleSearch = ({ target: input }) => {
+    setsearchInput(input.value);
     const results = courses.filter((item) =>
       item.title.trim().toLowerCase().includes(input.value.trim().toLowerCase())
     );
@@ -74,6 +45,8 @@ const Courses = () => {
   useEffect(() => {
     dispatch(loadCourses());
   }, []);
+
+  if (loading) return <Loading />;
 
   const finalData = searchResults.length ? searchResults : courses;
 
@@ -117,7 +90,7 @@ const Courses = () => {
           </Grid>
         </Box>
         <Container>
-          <Grid container spacing={4}>
+         {!searchResults.length && searchInput.length ? <NoMatchFound/> :  <Grid container spacing={4}>
             {finalData.map((item) => (
               <CourseCard
                 key={item._id}
@@ -131,7 +104,7 @@ const Courses = () => {
                 onClick={() => handleRouteChange(item._id)}
               />
             ))}
-          </Grid>
+          </Grid>}
         </Container>
       </Box>
     </AutoScrollContainer>

@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { LocalLibrary, LockClock } from "@mui/icons-material";
 import { makeStyles } from "@mui/styles";
+import { useSelector } from "react-redux";
 
 import AutoScrollContainer from "./AutoScrollContainer";
 import config from "../config.json";
@@ -26,6 +27,7 @@ const CouseDetails = ({
 }) => {
   const classes = useStyles();
   const user = authService.getCurrentUser();
+  console.log(useSelector((state) => state.courseDetails));
 
   return (
     <AutoScrollContainer>

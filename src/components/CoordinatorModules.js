@@ -9,6 +9,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  CircularProgress,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,11 +22,8 @@ import AppDialog from "./AppDialog";
 import * as authService from "../services/authService";
 import CurrentModuleContainer from "./CurrentModuleContainer";
 
-
 const CoordinatorModules = () => {
-  const drawerWidth = 240;
   const classes = useStyles();
-
   const {
     data: currentModule,
     isSaved,
@@ -33,10 +31,7 @@ const CoordinatorModules = () => {
   } = useSelector((state) => state.currentModule);
 
   return (
-    <Container
-      // style={{ paddingLeft: drawerWidth + 10 }}
-      className={classes.container}
-    >
+    <Container className={classes.container}>
       <Box className={classes.main}>
         <CurrentModuleContainer />
       </Box>
@@ -55,7 +50,7 @@ const ModuleListBox = () => {
   const { data: currentModule } = useSelector((state) => state.currentModule);
   const currentItem = currentModule._id;
   const {
-    data: { modules },
+    data: { modules }, loading
   } = useSelector((state) => state.entities.modules);
 
   const handleLoadCurrentModule = (id) => {
@@ -65,6 +60,20 @@ const ModuleListBox = () => {
   const handleOpenDialog = () => setOpen(true);
 
   const handleCloseDialog = () => setOpen(false);
+
+  if (loading)
+    return (
+      <Grid
+        sx={{ paddingTop: 2 }}
+        container
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item>
+          <CircularProgress />
+        </Grid>
+      </Grid>
+    );
 
   return (
     <Box>

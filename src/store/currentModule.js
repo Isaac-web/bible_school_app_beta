@@ -26,6 +26,16 @@ const slice = createSlice({
     currentModuleRevoked: (currentModule, action) => {
       currentModule.data = action.payload;
     },
+    currentModuleDeleteStarted: (currentModule, action) => {
+      currentModule.awaiting = true;
+    },
+    currentModuleDeleted: (currentModule, action) => {
+      currentModule.awaiting = false;
+      currentModule.data = { _id: undefined };
+    },
+    currentModuleDeletedFailed: (currentModule, action) => {
+      currentModule.awaiting = false;
+    },
     questionAnswerChanged: (currentModule, action) => {
       const { ans, index } = action.payload;
       currentModule.data.questions[index].ans = ans;
@@ -61,6 +71,9 @@ const {
   currentModuleLoadStarted,
   currentModuleLoadFailed,
   currentModuleRevoked,
+  currentModuleDeleteStarted,
+  currentModuleDeleted,
+  currentModuleDeletedFailed: currentModuleDeleteFailed,
   questionAnswerChanged,
   answersHidden,
   questionAdded,
@@ -113,7 +126,6 @@ export const saveChanges = () => (dispatch, getState) => {
   );
 };
 
-
 export const uploadBackgroundImage = (data) => (dispatch, getState) => {
   const {
     currentModule: { data: currentModule },
@@ -138,7 +150,7 @@ export const uploadDocument = (data) => (dispatch, getState) => {
 
   dispatch(
     apiRequest({
-      url: `/modules/background/${currentModule._id}`,
+      url: `/modules/upload/${currentModule._id}`,
       method: "patch",
       data,
       onSuccess: currentModuleLoaded.type,
@@ -161,3 +173,20 @@ export const deleteQuestion = (questionId, index) => (dispatch, getState) => {
 
   dispatch(questionDeleted({ index }));
 };
+
+export const deleteCurrentModule = (id, callback) => async (dispatch) => {
+  console.log(id);
+
+  // await dispatch(
+  //   apiRequest({
+  //     url: `/modules${id}`,
+  //     method: "delete",
+  //     onStart: currentModuleDeleteStarted.type,
+  //     onSuccess: currentModuleDeleted.type,
+  //     onError: currentModuleDeleteFailed.type,
+  //   })
+  // );
+
+  if (typeof callback === "function") callback();
+};
+
