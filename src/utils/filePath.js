@@ -1,6 +1,7 @@
 import config from "../config.json";
 
-const filesBaseURL = config.api.filesBaseURL;
+const baseUrl = process.env.REACT_APP_BASE_URL || config.api.baseURL;
+const filesBaseURL = baseUrl.replace("/api", "");
 
 export const getFilePath = (path) => {
   path = path?.replaceAll("\\", "/");

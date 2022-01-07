@@ -27,9 +27,11 @@ const api =
     next(action);
 
     try {
+      const baseUrl = process.env.REACT_APP_API_URL || config.api.baseURL;
+      console.log("ENV:", process.env.REACT_APP_API_URL);
       axios.defaults.headers.common["x-auth-token"] = authService.getToken();
       const response = await axios.request({
-        baseURL: config.api.baseURL,
+        baseURL: baseUrl,
         url,
         method,
         data,
