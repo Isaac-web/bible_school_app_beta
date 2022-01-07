@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
 import config from "../config.json";
@@ -22,8 +22,20 @@ const Footer = () => {
         backgroundColor: config.colors.light,
       }}
     >
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item>Copyright@2021</Grid>
+      <Grid
+        container
+        flexDirection={"column"}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item>
+          <Typography variant="h6" align="center" fontWeight={200}>
+            A platform to enrich your self with biblical knowledge
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography>copyright@2021</Typography>
+        </Grid>
       </Grid>
     </Box>
   );

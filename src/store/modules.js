@@ -7,9 +7,9 @@ import * as currentModuleActions from "../store/currentModule";
 const slice = createSlice({
   name: "modules",
   initialState: {
-    awaiting: false,
-    loading: false,
-    lastFetched: null,
+    // awaiting: false,
+    // loading: false,
+    // lastFetched: null,
     data: [],
   },
   reducers: {
@@ -17,7 +17,6 @@ const slice = createSlice({
       modules.awating = true;
     },
     moduleAdded: (modules, action) => {
-      modules.data.push(action.payload);
       modules.awaiting = false;
     },
     addModuleFailed: (modules, action) => {
@@ -26,10 +25,9 @@ const slice = createSlice({
 
     deleteModuleStarted: (modules, action) => {
       modules.awating = true;
-      console.log("Hello World");
     },
     moduleDeleted: (modules, action) => {
-      console.log("Hello World", modules.data[0]);
+      modules.data = action.payload;
     },
     deleteMOduleFailed: (modules, action) => {
       modules.awaiting = false;
@@ -83,7 +81,7 @@ export const addModule = (data) => (dispatch) => {
   );
 };
 
-export const removeModuleFromList = (id) => (dispatch) => {
-  dispatch(moduleDeleted(id));
+export const reassignModuleList = (remainingMOdules) => (dispatch) => {
+  dispatch(moduleDeleted(remainingMOdules));
 };
 

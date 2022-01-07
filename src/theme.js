@@ -3,6 +3,7 @@ import config from "./config.json";
 
 const theme = createTheme({
   typography: {
+    color: "black",
     h4: {
       fontWeight: "bold",
       gutterButtom: true,

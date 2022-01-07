@@ -9,11 +9,13 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemSecondaryAction,
   CircularProgress,
+  IconButton,
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { Add } from "@mui/icons-material";
+import { Add, Delete } from "@mui/icons-material";
 
 import config from "../config.json";
 import * as currentmoduleActions from "../store/currentModule";
@@ -63,6 +65,14 @@ const ModuleListBox = () => {
 
   const handleCloseDialog = () => setOpen(false);
 
+  const handleDeleteModule = (id) => {
+    const remainingModules = modules.filter((item) => item._id !== id);
+
+    dispatch(moduleActions.reassignModuleList(remainingModules));
+
+    dispatch(currentmoduleActions.deleteCurrentModule(id));
+  };
+
   if (loading)
     return (
       <Grid
@@ -101,6 +111,14 @@ const ModuleListBox = () => {
                   }`,
                 }}
               />
+              <ListItemSecondaryAction>
+                <IconButton
+                  onClick={() => handleDeleteModule(m._id)}
+                  size={"small"}
+                >
+                  <Delete />
+                </IconButton>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
         </List>
@@ -145,6 +163,9 @@ const CreateModuleDialog = ({ open, onClose }) => {
     dispatch(moduleActions.addModule(data));
 
     clear();
+
+
+    window.location.reload();
   };
 
   const handleCancel = () => {

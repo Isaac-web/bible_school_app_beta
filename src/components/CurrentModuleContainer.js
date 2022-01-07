@@ -155,16 +155,15 @@ const CurrentModuleContainer = () => {
   };
 
   const handleDeleteModule = () => {
-    const removeModuleFromList = dispatch(
-      modulesActions.removeModuleFromList(currentModule._id)
-    );
-
-    dispatch(
-      currentmoduleActions.deleteCurrentModule(
-        currentModule._id,
-        removeModuleFromList
-      )
-    );
+    // const removeModuleFromList = dispatch(
+    //   modulesActions.removeModuleFromList(currentModule._id)
+    // );
+    // dispatch(
+    //   currentmoduleActions.deleteCurrentModule(
+    //     currentModule._id,
+    //     removeModuleFromList
+    //   )
+    // );
   };
 
   if (loading) return <Loading />;
@@ -200,19 +199,20 @@ const CurrentModuleContainer = () => {
               </Tooltip>
             </Grid>
 
-            <Grid item>
+            {/* <Grid item>
               <Tooltip title={`Delete`}>
                 <IconButton onClick={handleOpenDeleteDialog}>
                   <Delete sx={{ color: "rgba(225, 0, 0, 0.7)" }} />
                 </IconButton>
               </Tooltip>
-            </Grid>
+            </Grid> */}
           </Grid>
           <Paper>
             <AppDialog
               title="Update Background"
               open={bgDialogOpen}
               onClose={handleCloseBgDialog}
+              maxWidth={"xs"}
             >
               <Grid container direction="column">
                 <Grid item>
@@ -231,6 +231,7 @@ const CurrentModuleContainer = () => {
               title="Upload file"
               open={fileDialogOpen}
               onClose={handleCloseFileDialog}
+              maxWidth={"xs"}
             >
               <Grid container direction="column">
                 <Grid item>

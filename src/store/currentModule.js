@@ -176,21 +176,18 @@ export const deleteQuestion = (questionId, index) => (dispatch, getState) => {
   dispatch(questionDeleted({ index }));
 };
 
-export const deleteCurrentModule =
-  (id, callback) => async (dispatch, getState) => {
-    const { currentModule } = getState();
-    console.log(currentModule);
+export const deleteCurrentModule = (id) => async (dispatch) => {
+  dispatch(
+    apiRequest({
+      url: `/modules/${id}`,
+      method: "delete",
+      onStart: currentModuleDeleteStarted.type,
+      onSuccess: currentModuleDeleted.type,
+      onError: currentModuleDeleteFailed.type,
+      toastOnError: true,
+    })
+  );
 
-    await dispatch(
-      apiRequest({
-        url: `/modules${id}`,
-        method: "delete",
-        onStart: currentModuleDeleteStarted.type,
-        onSuccess: currentModuleDeleted.type,
-        onError: currentModuleDeleteFailed.type,
-      })
-    );
-
-    if (typeof callback === "function") callback();
-  };
+  dispatch(currentModuleDeleted());
+};
 
