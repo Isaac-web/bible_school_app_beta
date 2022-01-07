@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as currentModuleActions from "../store/currentModule";
 import * as enrollmentService from "../services/enrollmentService";
 
-const QuizResult = () => {
+const QuizResult = ({ onNextModule }) => {
   const dispatch = useDispatch();
   const { currentModule } = enrollmentService.getcurrentEnrollment();
   const { data } = useSelector((state) => state.quiz);
@@ -16,6 +16,7 @@ const QuizResult = () => {
   const score = data?.score > 0 ? data?.score?.toFixed(1) : 0;
 
   const handleNextModule = () => {
+    onNextModule();
     dispatch(currentModuleActions.loadCurrentModule(currentModule));
   };
 
@@ -58,19 +59,21 @@ const QuizResult = () => {
           </Grid>
         )}
 
-        <Grid item>
-          <Typography gutterBottom variant="body1">
-            Your score is below the passmark (70%)
-          </Typography>
-          <Typography
-            align="center"
-            gutterBottom
-            variant="body2"
-            style={{ color: "rgba(0, 0, 0, 0.3)" }}
-          >
-            Refresh to retry
-          </Typography>
-        </Grid>
+        {score < 0.7 && (
+          <Grid item>
+            <Typography gutterBottom variant="body1">
+              Your score is below the passmark (70%)
+            </Typography>
+            <Typography
+              align="center"
+              gutterBottom
+              variant="body2"
+              style={{ color: "rgba(0, 0, 0, 0.3)" }}
+            >
+              Refresh to retry
+            </Typography>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

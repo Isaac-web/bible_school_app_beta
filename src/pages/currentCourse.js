@@ -56,6 +56,7 @@ const CurrentCourse = () => {
   };
 
   const handleShowQuiz = () => setShowQuiz(true);
+  const handleHideQuiz = () => setShowQuiz(false);
 
   const openDialog = () => setQuizDialogOpen(true);
   const closeDialog = () => setQuizDialogOpen(false);
@@ -79,6 +80,7 @@ const CurrentCourse = () => {
               quizDialogOpen={quizDialogOpen}
               showQuiz={showQuiz}
               onShowQuiz={handleShowQuiz}
+              onHideQuiz={handleHideQuiz}
             />
           </Grid>
           <Grid item className={classes.sidebar} xs={12}>
@@ -209,6 +211,7 @@ const MainComponent = ({
   showQuiz,
   onCloseDialog,
   onShowQuiz,
+  onHideQuiz,
   quizDialogOpen,
 }) => {
   const classes = useStyles();
@@ -234,7 +237,7 @@ const MainComponent = ({
   const moduleDenied =
     isModuleCovered || currentEnrollment.currentModule === currentModule._id;
 
-  if (quizResults) return <QuizResult />;
+  if (quizResults) return <QuizResult onNextModule={onHideQuiz} />;
 
   if (loading)
     return (
