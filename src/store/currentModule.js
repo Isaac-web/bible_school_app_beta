@@ -141,6 +141,7 @@ export const uploadBackgroundImage = (data) => (dispatch, getState) => {
       method: "patch",
       data,
       onSuccess: currentModuleLoaded.type,
+      toastOnError: true,
     })
   );
 };
@@ -156,6 +157,7 @@ export const uploadDocument = (data) => (dispatch, getState) => {
       method: "patch",
       data,
       onSuccess: currentModuleLoaded.type,
+      toastOnError: true,
     })
   );
 };

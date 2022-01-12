@@ -49,6 +49,8 @@ const Courses = () => {
   if (loading) return <Loading />;
 
   const finalData = searchResults.length ? searchResults : courses;
+  console.log(finalData);
+  
 
   return (
     <AutoScrollContainer>
@@ -90,26 +92,30 @@ const Courses = () => {
           </Grid>
         </Box>
         <Container>
-         {!searchResults.length && searchInput.length ? <NoMatchFound/> :  <Grid container spacing={4}>
-            {finalData.map((item) => (
-              <CourseCard
-                key={item._id}
-                title={item.title}
-                imageUri={item.imageUri || "not-provided"}
-                numberOfEnrollments={item.enrollments}
-                coordinatorName={`${item.coordinator.firstname} ${item.coordinator.lastname}`}
-                coordinatorImageUri={
-                  item.coordinator.imageUri || "coordinator image"
-                }
-                onClick={() => handleRouteChange(item._id)}
-              />
-            ))}
-          </Grid>}
+          {!searchResults.length && searchInput.length ? (
+            <NoMatchFound />
+          ) : (
+            <Grid container spacing={4}>
+              {finalData.map((item) => (
+                <CourseCard
+                  key={item._id}
+                  title={item.title}
+                  imageUri={item.imageUri || "not-provided"}
+                  numberOfEnrollments={item.enrollments}
+                  coordinatorName={`${item.coordinator.firstname} ${item.coordinator.lastname}`}
+                  coordinatorImageUri={
+                    item.coordinator.imageUri || "coordinator image"
+                  }
+                  onClick={() => handleRouteChange(item._id)}
+                />
+              ))}
+            </Grid>
+          )}
         </Container>
       </Box>
     </AutoScrollContainer>
   );
-};
+};;
 
 const useStyles = makeStyles((theme) => ({
   searchInput: {
