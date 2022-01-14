@@ -42,9 +42,9 @@ const Register = () => {
 
   const redirect = () => {
     let path = "/login";
-    const user = authService.getCurrentUser();
-    if (user?.status == "admin") path = "/admin";
-    else path = "/enrollments";
+    // const user = authService.getCurrentUser();
+    // if (user?.status == "admin") path = "/admin";
+    // else path = "/enrollments";
 
     history.push(path);
   };

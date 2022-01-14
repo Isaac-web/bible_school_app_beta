@@ -189,12 +189,10 @@ const CreateModuleDialog = ({ open, onClose }) => {
     if (!courseId) return;
 
     data.courseId = courseId;
-    dispatch(moduleActions.addModule(data));
+    dispatch(moduleActions.addModule(data, () => window.location.reload()));
 
     clear();
-
-    window.location.reload();
-  };
+  };;
 
   const handleCancel = () => {
     clear();

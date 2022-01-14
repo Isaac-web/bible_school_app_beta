@@ -72,8 +72,8 @@ export const loadModules = (id) => (dispatch) => {
   );
 };
 
-export const addModule = (data) => (dispatch) => {
-  dispatch(
+export const addModule = (data, callback) => async (dispatch) => {
+  await dispatch(
     apiRequest({
       url: "/modules/",
       method: "post",
@@ -82,6 +82,8 @@ export const addModule = (data) => (dispatch) => {
       toastOnError: true,
     })
   );
+
+  if (typeof callback === "function") callback();
 };
 
 export const deleteModule = (id) => (dispatch) => {

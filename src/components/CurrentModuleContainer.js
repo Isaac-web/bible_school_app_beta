@@ -13,7 +13,7 @@ import {
 import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Add, Save, Delete, Image, InsertDriveFile } from "@mui/icons-material";
+import { Add, Save, Delete, Edit, Image, InsertDriveFile } from "@mui/icons-material";
 
 import config from "../config.json";
 import * as currentmoduleActions from "../store/currentModule";
@@ -207,7 +207,7 @@ const CurrentModuleContainer = () => {
             <Grid item>
               <Tooltip title={`Open Content TextField`}>
                 <IconButton size="small" onClick={handleEdit}>
-                  <Delete sx={{ color: "", fontSize: "1.2em" }} />
+                  <Edit sx={{ color: "", fontSize: "1.2em" }} />
                 </IconButton>
               </Tooltip>
             </Grid>
