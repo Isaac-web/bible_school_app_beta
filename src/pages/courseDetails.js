@@ -18,6 +18,11 @@ const CourseDetails = () => {
     (state) => state.entities.courseDetails
   );
 
+
+  
+console.log(course.imageUri);
+
+
   const handleEnroll = (id) => {
     const user = authService.getCurrentUser();
     if (!user._id) return;

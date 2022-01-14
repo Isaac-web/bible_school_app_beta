@@ -6,6 +6,7 @@ const slice = createSlice({
   name: "currentModule",
   initialState: {
     loading: false,
+    updating: false,
     awaiting: false,
     isSaved: true,
     errorMessage: "",
@@ -64,6 +65,18 @@ const slice = createSlice({
     questionDeleted: (currentModule, action) => {
       currentModule.data.questions.splice(action.payload.index, 1);
     },
+    currentModuleUpateStarted: (currentModule, action) => {
+      currentModule.errorMessage = "";
+      currentModule.updating = true;
+    },
+    currentModuleUpated: (currentModule, action) => {
+      currentModule.updating = false;
+      currentModule.data = action.payload;
+    },
+    currentModuleUpateFailed: (currentModule, action) => {
+      currentModule.upadting = false;
+      currentModule.errorMessage = action.payload;
+    },
   },
 });
 
@@ -83,6 +96,9 @@ const {
   saveChangesFailed,
   changesSaved,
   questionDeleted,
+  currentModuleUpated,
+  currentModuleUpateStarted,
+  currentModuleUpateFailed,
 } = slice.actions;
 
 export const loadCurrentModule = (moduleId) => (dispatch) => {
@@ -94,6 +110,7 @@ export const loadCurrentModule = (moduleId) => (dispatch) => {
       onStart: currentModuleLoadStarted.type,
       onSuccess: currentModuleLoaded.type,
       onError: currentModuleLoadFailed.type,
+      toastOnError: true,
     })
   );
 };
@@ -191,5 +208,24 @@ export const deleteCurrentModule = (id) => async (dispatch) => {
   );
 
   dispatch(currentModuleDeleted());
+};
+
+export const updateModule = (id, data, callback) => (dispatch, getState) => {
+  const state = getState();
+  const { data: currentModule, errorMessage } = state.currentModule;
+
+  dispatch(
+    apiRequest({
+      url: `/modules/${currentModule._id}`,
+      method: "patch",
+      data,
+      onStart: currentModuleUpateStarted.type,
+      onSuccess: currentModuleUpated.type,
+      onError: currentModuleUpateFailed.type,
+      toastOnError: true,
+    })
+  );
+
+  if (typeof callback === "function" && !errorMessage) callback();
 };
 

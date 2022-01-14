@@ -13,7 +13,6 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Popover,
   SwipeableDrawer,
   Typography,
 } from "@mui/material";
@@ -33,6 +32,7 @@ import { useHistory, useLocation, Link } from "react-router-dom";
 
 import * as authService from "../services/authService";
 import { logoutUser } from "../store/auth";
+import logo from "../assets/images/logo.png";
 
 const Header = () => {
   const classes = useStyles();
@@ -45,7 +45,10 @@ const Header = () => {
     <>
       <AppBar sx={{ zIndex: (theme) => theme.zIndex.drawer }}>
         <Toolbar sx={{ color: (theme) => theme.palette.primary.main }}>
-          Header
+          <Link to="/home">
+            <img src={logo} alt="Logo" style={{ width: 50, height: 50 }} />
+          </Link>
+
           <Box sx={{ marginLeft: "auto", display: "flex" }}>
             <AuthBox />
             <IconButton onClick={handleOpenDrawer}>
@@ -102,12 +105,23 @@ const MenuDrawer = ({ open, onClose, onOpen }) => {
       link: "/enrollments",
       Icon: <LibraryBooks />,
     });
+  if (user)
+    defaultMenu.push({
+      label: "Profile",
+      link: "/profile",
+      Icon: <LibraryBooks />,
+    });
 
   const coordinatorMenu = [
     { label: "Course", link: "/coordinator/course", Icon: <Analytics /> },
     {
       label: "Enrollments",
       link: "/coordinator/enrollments",
+      Icon: <FeaturedPlayList />,
+    },
+    {
+      label: "Login As Admin",
+      link: "/login",
       Icon: <FeaturedPlayList />,
     },
   ];

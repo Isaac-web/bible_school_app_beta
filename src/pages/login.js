@@ -77,7 +77,7 @@ const Login = () => {
                   autoFocus
                   fullWidth
                   name="email"
-                  label="Username"
+                  label="Email"
                   required
                 />
               </Grid>

@@ -30,6 +30,7 @@ import QuizResult from "../components/QuizResult";
 import TitleBanner from "../components/TitleBanner";
 import * as downloadService from "../services/downloadService";
 import { getFileName, getFilePath } from "../utils/filePath";
+import ModuleContentText from "../components/ModuleContentText";
 
 const CurrentCourse = () => {
   const classes = useStyles();
@@ -157,7 +158,7 @@ const Sidebar = ({
         ) : (
           <Box className={classes.moduleListBox}>
             <List>
-              {modules?.map((item) => (
+              {modules?.map((item, index) => (
                 <ListItem
                   key={item._id}
                   style={{
@@ -170,7 +171,7 @@ const Sidebar = ({
                   onClick={() => onModuleChange(item._id)}
                 >
                   <ListItemText
-                    primary={item.title}
+                    primary={`Module ${index + 1} - ${item.title}`}
                     classes={{
                       primary:
                         currentModuleId === item._id
@@ -266,11 +267,19 @@ const MainComponent = ({
     );
 
   return (
-    <Box>
-      <TitleBanner backgroundImageUri={currentModule.imageUri} />
+    <Box style={{ margin: "0 3px" }}>
+      <TitleBanner
+        backgroundImageUri={currentModule.imageUri}
+        title={currentModule.title}
+        hideSubtitle
+      />
 
       {moduleDenied ? (
         <Box>
+          <Paper style={{ margin: "1em 0" }}>
+            <ModuleContentText hideTitle contentText={currentModule.content} />
+          </Paper>
+
           <Grid
             container
             justifyContent="center"
@@ -287,7 +296,7 @@ const MainComponent = ({
                 variant="outlined"
                 endIcon={<Quiz />}
                 onClick={onOpenDialog}
-                disabled={isModuleCovered}
+                disabled={isModuleCovered || !currentModule.questions.length}
               >
                 Start Quiz
               </Button>

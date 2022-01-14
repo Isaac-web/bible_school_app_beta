@@ -12,24 +12,27 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Add, Save, Delete, Image, InsertDriveFile } from "@mui/icons-material";
 
 import config from "../config.json";
 import * as currentmoduleActions from "../store/currentModule";
-import modules, * as modulesActions from "../store/modules";
 import TitleBanner from "./TitleBanner";
 import AppDialog from "./AppDialog";
 import QuestionBox from "./QuestionBox";
 import Loading from "./Loading";
 import PromptDialog from "./PromptDialog";
+import AddModuleContentDialog from "./AddModuleContentDialog";
+import ModuleContentText from "./ModuleContentText";
 
 const CurrentModuleContainer = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [bgDialogOpen, setBgDialogOpen] = useState(false);
   const [backgroundFile, setBackgroundFile] = useState(null);
-  const [imagePrview, setImagePreview] = useState(null);
+  const [contentDialogOpen, setContentDialogOpen] = useState(false);
   const [file, setFile] = useState(null);
   const [fileDialogOpen, setFileDialogOpen] = useState(false);
   const [questionData, setQuestionData] = useState({
@@ -154,26 +157,28 @@ const CurrentModuleContainer = () => {
     setDeleteDialogOpen(false);
   };
 
-  const handleDeleteModule = () => {
-    // const removeModuleFromList = dispatch(
-    //   modulesActions.removeModuleFromList(currentModule._id)
-    // );
-    // dispatch(
-    //   currentmoduleActions.deleteCurrentModule(
-    //     currentModule._id,
-    //     removeModuleFromList
-    //   )
-    // );
+  const handleDeleteModule = () => {};
+
+  const handleContentDialogClose = () => setContentDialogOpen(false);
+
+  const handleEdit = () => {
+    history.push("/coordinator/course/modules/edit");
   };
 
   if (loading) return <Loading />;
 
   if (!currentModule._id) return <NoModuleComponent />;
 
+  const content = currentModule.content;
+
   return (
-    <Box>
+    <Box style={{ padding: "0 1em" }}>
       <>
-        <TitleBanner backgroundImageUri={currentModule.imageUri} />
+        <TitleBanner
+          backgroundImageUri={currentModule.imageUri}
+          title={currentModule.subtitle}
+          hideSubtitle
+        />
         <Box>
           <Grid
             container
@@ -185,28 +190,31 @@ const CurrentModuleContainer = () => {
               <Tooltip
                 title={`${currentModule.imageUri || "No background yet"}`}
               >
-                <IconButton onClick={handleOpenBgDialog}>
-                  <Image />
+                <IconButton size="small" onClick={handleOpenBgDialog}>
+                  <Image sx={{ fontSize: "1.2em" }} />
                 </IconButton>
               </Tooltip>
             </Grid>
 
             <Grid item>
               <Tooltip title={`${currentModule.fileUri || "No file yet."}`}>
-                <IconButton onClick={handleOpenFileDialog}>
-                  <InsertDriveFile />
+                <IconButton size="small" onClick={handleOpenFileDialog}>
+                  <InsertDriveFile sx={{ fontSize: "1.2em" }} />
                 </IconButton>
               </Tooltip>
             </Grid>
 
-            {/* <Grid item>
-              <Tooltip title={`Delete`}>
-                <IconButton onClick={handleOpenDeleteDialog}>
-                  <Delete sx={{ color: "rgba(225, 0, 0, 0.7)" }} />
+            <Grid item>
+              <Tooltip title={`Open Content TextField`}>
+                <IconButton size="small" onClick={handleEdit}>
+                  <Delete sx={{ color: "", fontSize: "1.2em" }} />
                 </IconButton>
               </Tooltip>
-            </Grid> */}
+            </Grid>
           </Grid>
+
+          <ModuleContentText contentText={content} />
+
           <Paper>
             <AppDialog
               title="Update Background"
@@ -235,7 +243,11 @@ const CurrentModuleContainer = () => {
             >
               <Grid container direction="column">
                 <Grid item>
-                  <input type="file" onChange={handleFileChange} />
+                  <input
+                    type="file"
+                    accept="application/pdf"
+                    onChange={handleFileChange}
+                  />
                   <Button disabled={!file} onClick={handleSubmitFile}>
                     Save
                   </Button>
@@ -251,7 +263,14 @@ const CurrentModuleContainer = () => {
               onClose={handleCloseDeleteDialog}
             />
           </Paper>
-          <Paper elevation={2}>
+          <Paper
+            elevation={1}
+            sx={{ margin: "2em 0", marginBottom: "1em", padding: "1em" }}
+          >
+            <Typography variant="h4" gutterBottom>
+              Questions
+            </Typography>
+
             {!currentModule.questions?.length && (
               <Box style={{ padding: "5em 0" }}>
                 <Typography variant="h6" align="center">
@@ -310,7 +329,6 @@ const CurrentModuleContainer = () => {
           </Paper>
         </Box>
       </>
-
       <AppDialog
         dialogActions={dialogActions}
         open={open}
@@ -331,6 +349,7 @@ const CurrentModuleContainer = () => {
             <Grid item xs={12}>
               <TextField
                 label="Objectives"
+                placeholder="Eg. a, b, c"
                 value={questionData.objectives}
                 onChange={handleChange}
                 name="objectives"
@@ -339,6 +358,10 @@ const CurrentModuleContainer = () => {
           </Grid>
         </form>
       </AppDialog>
+      <AddModuleContentDialog
+        open={contentDialogOpen}
+        onClose={handleContentDialogClose}
+      />
     </Box>
   );
 };

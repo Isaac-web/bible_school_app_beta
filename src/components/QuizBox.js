@@ -40,6 +40,14 @@ const QuizBox = () => {
     setQuizDuration(quizDuaration);
   }, []);
 
+
+  if (!currentModule.questions.length)
+    return (
+      <Typography sx={{ margin: "5em 0" }} align="center" variant="body1">
+        Sorry. No questions yet.
+      </Typography>
+    );
+
   return (
     <Box>
       <Timer date={quizDuration} onComplete={handleSubmit} />

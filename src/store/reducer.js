@@ -6,6 +6,7 @@ import currentModule from "./currentModule";
 import quiz from "./quiz";
 import toast from "./toast";
 import summery from "./summery";
+import currentUser from "./currentUser";
 
 const reducer = combineReducers({
   entities,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   quiz,
   summery,
   toast,
+  currentUser,
 });
 
 export default reducer;

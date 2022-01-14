@@ -17,6 +17,8 @@ import Loading from "../components/Loading";
 import config from "../config.json";
 import * as enrollmentSerivce from "../services/enrollmentService";
 import * as authService from "../services/authService";
+import { loadCourses } from "../store/courses";
+import CourseCard from "../components/CourseCard";
 
 const Enrollments = () => {
   const classes = useStyles();
@@ -26,6 +28,7 @@ const Enrollments = () => {
   const { data: enrollments, loading } = useSelector(
     (state) => state.entities.enrollments
   );
+  const { data: courses } = useSelector((state) => state.entities.courses);
 
   const formatSearchText = (str) => {
     return str.trim().toLowerCase();
@@ -49,25 +52,55 @@ const Enrollments = () => {
     history.push(`/courses/take/${enrollment?.course?._id}`);
   };
 
-
   useEffect(() => {
     const user = authService.getCurrentUser();
     dispatch(loadEnrollments(user?._id));
+    dispatch(loadCourses());
   }, []);
 
   if (loading) return <Loading />;
 
   if (!enrollments.length)
     return (
-      <Container sx={{ paddingTop: "3em" }}>
-        <Typography align="center" variant="h5">
-          No Enrollment Yet
-        </Typography>
-        <Typography align="center" variant="body2">
-          <Link to="/courses">Visit the courses page to enroll</Link>
-        </Typography>
-      </Container>
+      <>
+        <Container
+          sx={{
+            padding: "8em 0",
+            marginTop: "10px",
+            backgroundColor: config.colors.light,
+          }}
+        >
+          <Typography align="center" variant="h5">
+            No Enrollment Yet
+          </Typography>
+          <Typography align="center" variant="body2">
+            <Link to="/courses">Visit the courses page to enroll</Link>
+          </Typography>
+        </Container>
+        <Container sx={{ marginTop: "10em" }}>
+          <Typography variant="h5" gutterBottom>
+            Available Courses
+          </Typography>
+          {courses.map((item) => (
+            <Link to={`/courses/details/${item._id}`}>
+              <CourseCard
+                title={item.title}
+                imageUri={item.imageUri}
+                coordinatorName={`${item.coordinator.firstname} ${item.coordinator.lastname}`}
+                coordinatorImageUri={item.coordinator?.imageUri}
+                numberOfEnrollments={item.enrollments}
+              />
+            </Link>
+          ))}
+        </Container>
+      </>
     );
+
+  // title,
+  // imageUri,
+  // coordinatorName,
+  // coordinatorImageUri,
+  // numberOfEnrollments,
 
   const finalData = searchResults.length ? searchResults : enrollments;
   return (

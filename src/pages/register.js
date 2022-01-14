@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import AppTextField from "../components/form/AppTextField";
 import { registerUser } from "../store/auth";
+import * as authService from "../services/authService";
 
 const validationSchema = Yup.object().shape({
   address: Yup.string().min(3).max(150).required().label("Address"),
@@ -39,10 +40,13 @@ const Register = () => {
     (state) => state.auth
   );
 
-
-
   const redirect = () => {
-    history.push("/login");
+    let path = "/login";
+    const user = authService.getCurrentUser();
+    if (user?.status == "admin") path = "/admin";
+    else path = "/enrollments";
+
+    history.push(path);
   };
 
   const handleSignUp = (data) => {

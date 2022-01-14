@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Add, Delete } from "@mui/icons-material";
 
 import config from "../config.json";
-import * as currentmoduleActions from "../store/currentModule";
+import  * as currentmoduleActions from "../store/currentModule";
 import * as moduleActions from "../store/modules";
 import AppDialog from "./AppDialog";
 import * as authService from "../services/authService";
@@ -66,11 +66,10 @@ const ModuleListBox = () => {
   const handleCloseDialog = () => setOpen(false);
 
   const handleDeleteModule = (id) => {
-    const remainingModules = modules.filter((item) => item._id !== id);
-
-    dispatch(moduleActions.reassignModuleList(remainingModules));
 
     dispatch(currentmoduleActions.deleteCurrentModule(id));
+
+    window.location.reload();
   };
 
   if (loading)
@@ -93,34 +92,64 @@ const ModuleListBox = () => {
         <Empty />
       ) : (
         <List>
-          {modules?.map((m) => (
-            <ListItem
-              key={m._id}
-              className={`${classes.sidebarListItem} ${
-                currentItem === m._id ? classes.activeSidebarListItem : ""
-              }`}
-              onClick={() => handleLoadCurrentModule(m._id)}
-            >
-              <ListItemText
-                primary={m.title}
-                classes={{
-                  primary: `${classes.sidebarListItemPrimaryText} ${
-                    currentItem === m._id
-                      ? classes.activeSidebarListItemPrimaryText
-                      : ""
-                  }`,
-                }}
-              />
-              <ListItemSecondaryAction>
-                <IconButton
-                  onClick={() => handleDeleteModule(m._id)}
-                  size={"small"}
-                >
-                  <Delete />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
+          {modules?.map((m, index) => {
+            return (
+              <ListItem
+                key={m._id}
+                className={`${classes.sidebarListItem} ${
+                  currentItem === m._id ? classes.activeSidebarListItem : ""
+                }`}
+                onClick={() => handleLoadCurrentModule(m._id)}
+              >
+                <ListItemText
+                  primary={`Module ${index + 1} - ${m.title}`}
+                  classes={{
+                    primary: `${classes.sidebarListItemPrimaryText} ${
+                      currentItem === m._id
+                        ? classes.activeSidebarListItemPrimaryText
+                        : ""
+                    }`,
+                  }}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    onClick={() => handleDeleteModule(m._id)}
+                    size={"small"}
+                  >
+                    <Delete />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            );
+            // return (
+            //   <ListItem
+            //     key={m._id}
+            //     className={`${classes.sidebarListItem} ${
+            //       currentItem === m._id ? classes.activeSidebarListItem : ""
+            //     }`}
+            //     onClick={() => handleLoadCurrentModule(m._id)}
+            //   >
+            //     <ListItemText
+            //       primary={`Module ${index + 1} - ${m.subtitle}`}
+            //       classes={{
+            //         primary: `${classes.sidebarListItemPrimaryText} ${
+            //           currentItem === m._id
+            //             ? classes.activeSidebarListItemPrimaryText
+            //             : ""
+            //         }`,
+            //       }}
+            //     />
+            //     <ListItemSecondaryAction>
+            //       <IconButton
+            //         onClick={() => handleDeleteModule(m._id)}
+            //         size={"small"}
+            //       >
+            //         <Delete />
+            //       </IconButton>
+            //     </ListItemSecondaryAction>
+            //   </ListItem>
+            // );
+          })}
         </List>
       )}
 
@@ -135,7 +164,7 @@ const ModuleListBox = () => {
 
 const CreateModuleDialog = ({ open, onClose }) => {
   const dispatch = useDispatch();
-  const [data, setData] = useState({ title: "", subtitle: "" });
+  const [data, setData] = useState({ title: "" });
   const { awaiting } = useSelector((state) => state.entities.modules);
   const createModuleDialogActions = [
     {
@@ -164,7 +193,6 @@ const CreateModuleDialog = ({ open, onClose }) => {
 
     clear();
 
-
     window.location.reload();
   };
 
@@ -173,7 +201,7 @@ const CreateModuleDialog = ({ open, onClose }) => {
   };
 
   const clear = () => {
-    setData({ title: "", subtitle: "" });
+    setData({ title: "" });
     onClose();
   };
 
@@ -199,19 +227,13 @@ const CreateModuleDialog = ({ open, onClose }) => {
               label="Title"
             />
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              name="subtitle"
-              onChange={handleChange}
-              value={data.subtitle}
-              label="Subtitle"
-            />
-          </Grid>
         </Grid>
       </form>
     </AppDialog>
   );
 };
+
+
 
 const useStyles = makeStyles((theme) => ({
   addFab: {

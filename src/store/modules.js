@@ -2,14 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { apiRequest } from "./api";
 
 import * as enrollmentService from "../services/enrollmentService";
-import * as currentModuleActions from "../store/currentModule";
 
 const slice = createSlice({
   name: "modules",
   initialState: {
-    // awaiting: false,
-    // loading: false,
-    // lastFetched: null,
+    awaiting: false,
+    loading: false,
+    lastFetched: null,
     data: [],
   },
   reducers: {
@@ -18,6 +17,7 @@ const slice = createSlice({
     },
     moduleAdded: (modules, action) => {
       modules.awaiting = false;
+      modules.data.push(action.payload);
     },
     addModuleFailed: (modules, action) => {
       modules.awaiting = false;
@@ -27,7 +27,11 @@ const slice = createSlice({
       modules.awating = true;
     },
     moduleDeleted: (modules, action) => {
-      modules.data = action.payload;
+      // modules.data = modules.data.filter(
+      //   (item) => item._id !== action.payload._id
+      // );
+
+      console.log.apply(modules.data);
     },
     deleteMOduleFailed: (modules, action) => {
       modules.awaiting = false;
@@ -69,19 +73,17 @@ export const loadModules = (id) => (dispatch) => {
 };
 
 export const addModule = (data) => (dispatch) => {
-  console.log(data);
-
   dispatch(
     apiRequest({
       url: "/modules/",
       method: "post",
       data,
       onSuccess: moduleAdded.type,
+      toastOnError: true,
     })
   );
 };
 
-export const reassignModuleList = (remainingMOdules) => (dispatch) => {
-  dispatch(moduleDeleted(remainingMOdules));
+export const deleteModule = (id) => (dispatch) => {
+  dispatch(moduleDeleted({ _id: id }));
 };
-

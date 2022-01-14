@@ -40,7 +40,7 @@ const TitleBanner = ({
 
 const useStyles = makeStyles((theme) => ({
   banner: {
-    padding: "4em 0",
+    padding: "5em 0",
     backgroundColor: "rgba(0, 0, 0, 0.1)",
   },
   subtitle: {
