@@ -1,15 +1,16 @@
 import { useEffect } from "react";
-import { Container, Typography, Avatar, Box, Grid } from "@mui/material";
+import { Container, Typography, Avatar, Box, Grid, Paper } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import EnrollmentCard from "../components/EnrollmentCard";
 
 import * as userActions from "../store/currentUser";
 import * as enrollmentActions from "../store/enrollments";
 import Empty from "../components/Empty";
+import Loading from "../components/Loading";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { data: user } = useSelector((state) => state.currentUser);
+  const { data: user, loading } = useSelector((state) => state.currentUser);
   const { data: enrollments } = useSelector(
     (state) => state.entities.enrollments
   );
@@ -18,6 +19,8 @@ const Profile = () => {
     dispatch(userActions.loadCurrentUser());
     dispatch(enrollmentActions.loadEnrollments(user._id));
   }, []);
+
+  if (loading) return <Loading />;
 
   return (
     <Box sx={{ paddingTop: "2em" }}>
@@ -47,17 +50,22 @@ const Profile = () => {
           </Grid>
         </Box>
 
-        <Box>
-          {!enrollments.length ? (
-            <Empty />
-          ) : (
-            <Grid container>
-              {enrollments.map((item) => (
-                <EnrollmentCard />
-              ))}
-            </Grid>
-          )}
-        </Box>
+        <Paper style={{ paddingTop: "1em", marginTop: "2em" }}>
+          <Typography align="center" gutterBottom variant="h5">
+            Enrollments
+          </Typography>
+          <Box>
+            {!enrollments.length ? (
+              <Empty />
+            ) : (
+              <Grid container>
+                {enrollments.map((item) => (
+                  <EnrollmentCard />
+                ))}
+              </Grid>
+            )}
+          </Box>
+        </Paper>
       </Container>
     </Box>
   );

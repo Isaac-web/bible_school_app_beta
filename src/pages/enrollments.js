@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Button,
   Container,
   Grid,
   Typography,
@@ -77,22 +78,31 @@ const Enrollments = () => {
             <Link to="/courses">Visit the courses page to enroll</Link>
           </Typography>
         </Container>
-        <Container sx={{ marginTop: "10em" }}>
-          <Typography variant="h5" gutterBottom>
-            Available Courses
-          </Typography>
-          {courses.map((item) => (
-            <Link to={`/courses/details/${item._id}`}>
-              <CourseCard
-                title={item.title}
-                imageUri={item.imageUri}
-                coordinatorName={`${item.coordinator.firstname} ${item.coordinator.lastname}`}
-                coordinatorImageUri={item.coordinator?.imageUri}
-                numberOfEnrollments={item.enrollments}
-              />
-            </Link>
-          ))}
-        </Container>
+        {courses.length && (
+          <Container sx={{ marginTop: "10em" }}>
+            <Typography variant="h5" gutterBottom>
+              Available Courses
+            </Typography>
+            <Grid container spacing={4}>
+              {courses.slice(0, 6).map((item) => (
+                <CourseCard
+                  component={Link}
+                  to={`/courses/details/${item._id}`}
+                  title={item.title}
+                  imageUri={item.imageUri}
+                  coordinatorName={`${item.coordinator.firstname} ${item.coordinator.lastname}`}
+                  coordinatorImageUri={item.coordinator?.imageUri}
+                  numberOfEnrollments={item.enrollments}
+                />
+              ))}
+            </Grid>
+            {courses.length > 5 && (
+              <Button component={Link} to="/courses" sx={{ margin: "1em 0" }}>
+                All Courses
+              </Button>
+            )}
+          </Container>
+        )}
       </>
     );
 
