@@ -6,6 +6,6 @@
   },
   "quizDuration": 300000,
   "api": {
-    "baseURL": "https://limitless-falls-91546.herokuapp.com/api"
+    "baseURL": "http://localhost:5000/api"
   }
 }
