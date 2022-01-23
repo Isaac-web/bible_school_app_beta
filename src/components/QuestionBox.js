@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: config.colors.light,
     color: config.colors.dark,
     borderRadius: theme.spacing(1),
+    overflow: "auto",
   },
 }));
 

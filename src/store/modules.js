@@ -72,7 +72,7 @@ export const loadModules = (id) => (dispatch) => {
   );
 };
 
-export const addModule = (data, callback) => async (dispatch) => {
+export const addModule = (data, callback) => async (dispatch, getState) => {
   await dispatch(
     apiRequest({
       url: "/modules/",

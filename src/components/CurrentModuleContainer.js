@@ -9,11 +9,19 @@ import {
   Typography,
   Paper,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, useTheme } from "@mui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { Add, Save, Delete, Edit, Image, InsertDriveFile } from "@mui/icons-material";
+import {
+  Add,
+  Save,
+  Delete,
+  Edit,
+  Image,
+  InsertDriveFile,
+} from "@mui/icons-material";
 
 import config from "../config.json";
 import * as currentmoduleActions from "../store/currentModule";
@@ -24,10 +32,15 @@ import Loading from "./Loading";
 import PromptDialog from "./PromptDialog";
 import AddModuleContentDialog from "./AddModuleContentDialog";
 import ModuleContentText from "./ModuleContentText";
+import NoModuleIcon from "../assets/images/empty-icon.png";
+import Empty from "./Empty";
+import noquestionsIcon from "../assets/images/empty-icon.png";
 
 const CurrentModuleContainer = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const [bgDialogOpen, setBgDialogOpen] = useState(false);
@@ -172,7 +185,7 @@ const CurrentModuleContainer = () => {
   const content = currentModule.content;
 
   return (
-    <Box style={{ padding: "0 1em" }}>
+    <Box style={{ padding: `${matchesSM ? 0 : "0 1em"}` }}>
       <>
         <TitleBanner
           backgroundImageUri={currentModule.imageUri}
@@ -267,15 +280,16 @@ const CurrentModuleContainer = () => {
             elevation={1}
             sx={{ margin: "2em 0", marginBottom: "1em", padding: "1em" }}
           >
-            <Typography variant="h4" gutterBottom>
-              Questions
+            <Typography variant="h5" gutterBottom>
+              {currentModule.questions.length ? "Questions" : null}
             </Typography>
 
             {!currentModule.questions?.length && (
               <Box style={{ padding: "5em 0" }}>
-                <Typography variant="h6" align="center">
+                <Empty imagePath={noquestionsIcon} title="No Questions yet." />
+                {/* <Typography variant="h6" align="center">
                   No questions yet
-                </Typography>
+                </Typography> */}
               </Box>
             )}
             {currentModule.questions?.map((item, index) => (
@@ -344,6 +358,8 @@ const CurrentModuleContainer = () => {
                 value={questionData.question}
                 onChange={handleChange}
                 name="question"
+                multiline
+                maxRows={3}
               />
             </Grid>
             <Grid item xs={12}>
@@ -353,6 +369,8 @@ const CurrentModuleContainer = () => {
                 value={questionData.objectives}
                 onChange={handleChange}
                 name="objectives"
+                multiline
+                maxRows={3}
               />
             </Grid>
           </Grid>
@@ -366,18 +384,44 @@ const CurrentModuleContainer = () => {
   );
 };
 
-const NoModuleComponent = () => (
-  <Box
-    style={{
-      padding: "5em",
-      backgroundColor: config.colors.light,
-    }}
-  >
-    <Typography variant="body1" align="center">
-      No module Selected
-    </Typography>
-  </Box>
-);
+const NoModuleComponent = () => {
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
+
+  return (
+    <Box
+      style={{
+        padding: `${matchesSM ? "4em" : "8em 12em"}`,
+        marginTop: "10px",
+        borderRadius: "1em",
+        backgroundColor: config.colors.light,
+      }}
+    >
+      <Grid
+        container
+        direction="column"
+        alignItems="center"
+        justifyContent={"center"}
+      >
+        <Grid item>
+          <img
+            style={{ width: "6em", height: "6em" }}
+            src={NoModuleIcon}
+            alt="No module selected."
+          />
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" align="center">
+            No module Selected
+          </Typography>
+          <Typography variant="subtitle1" align="center">
+            Please select a module
+          </Typography>
+        </Grid>
+      </Grid>
+    </Box>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   addFab: {

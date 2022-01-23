@@ -1,6 +1,9 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
 
+import Empty from "./Empty";
+import NoMatchFoundIcon from "../assets/images/no-search-icon.png";
+
 const NoMatchFound = () => {
   return (
     <Box>
@@ -11,7 +14,11 @@ const NoMatchFound = () => {
         alignItems="center"
       >
         <Grid item>
-          <Typography variant="body1">No Match Found</Typography>
+          <Empty
+            imagePath={NoMatchFoundIcon}
+            imageSize="medium"
+            title="No match found"
+          />
         </Grid>
       </Grid>
     </Box>

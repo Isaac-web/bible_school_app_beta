@@ -14,6 +14,7 @@ const PromptDialog = ({
   title,
   message,
   onAccept,
+  onDecline,
   acceptLabel,
   declineLabel,
   ...rest
@@ -34,7 +35,7 @@ const PromptDialog = ({
       <DialogActions>
         <Button
           size="small"
-          onClick={() => onClose()}
+          onClick={onDecline || onClose}
           variant="outlined"
           style={{ textTransform: "none", width: 100 }}
         >

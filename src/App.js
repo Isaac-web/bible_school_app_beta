@@ -21,6 +21,7 @@ import AdminRoute from "./components/AdminRoute";
 import CoordinatorRoute from "./components/CoordinatorRoute";
 import UserRoute from "./components/UserRoute";
 import Footer from "./components/Footer";
+import AutoScrollContainer from "./components/AutoScrollContainer";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -40,28 +41,30 @@ const App = () => {
       />
       <CssBaseline />
       <Header />
-      <Box sx={{ minHeight: "85vh" }}>
-        <Switch>
-          <CoordinatorRoute
-            path="/coordinator/course/modules/edit/"
-            component={CoordinatorModuleEdit}
-          />
-          <CoordinatorRoute path="/coordinator" component={Coordinator} />
-          <Route path="/courses/take/:id" component={CurrentCourse} />
-          <Route path="/courses/details/:id" component={CourseDetails} />
-          <Route path="/courses/" component={Courses} />
-          <UserRoute path="/enrollments" component={Enrollments} />
-          <Route path="/profile" component={Profile} />
-          <AdminRoute path="/admin" component={Admin} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-          <Route path="/home" component={Home} />
-          <Route path="/not-found" component={NotFound} />
-          <Route path="/access-denied" component={AccessDenied} />
-          <Redirect from="/" exact to="/home" />
-          <Redirect to="/not-found" />
-        </Switch>
-      </Box>
+      <AutoScrollContainer>
+        <Box sx={{ minHeight: "85vh" }}>
+          <Switch>
+            <CoordinatorRoute
+              path="/coordinator/course/modules/edit/"
+              component={CoordinatorModuleEdit}
+            />
+            <CoordinatorRoute path="/coordinator" component={Coordinator} />
+            <Route path="/courses/take/:id" component={CurrentCourse} />
+            <Route path="/courses/details/:id" component={CourseDetails} />
+            <Route path="/courses/" component={Courses} />
+            <UserRoute path="/enrollments" component={Enrollments} />
+            <UserRoute path="/profile" component={Profile} />
+            <AdminRoute path="/admin" component={Admin} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+            <Route path="/home" component={Home} />
+            <Route path="/not-found" component={NotFound} />
+            <Route path="/access-denied" component={AccessDenied} />
+            <Redirect from="/" exact to="/home" />
+            <Redirect to="/not-found" />
+          </Switch>
+        </Box>
+      </AutoScrollContainer>
       <Footer />
     </>
   );

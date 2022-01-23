@@ -15,9 +15,8 @@ import {
   Fab,
 } from "@mui/material";
 import { makeStyles, useTheme } from "@mui/styles";
-import { Feed, Quiz, ArrowDropUp } from "@mui/icons-material";
+import { Feed, Quiz, ArrowDropUp, WhatsApp } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-
 
 import * as actions from "../store/modules";
 import * as enrollmentService from "../services/enrollmentService";
@@ -31,6 +30,8 @@ import TitleBanner from "../components/TitleBanner";
 import * as downloadService from "../services/downloadService";
 import { getFileName, getFilePath } from "../utils/filePath";
 import ModuleContentText from "../components/ModuleContentText";
+import * as textFormat from "../utils/textFormat";
+import * as courseDetailActions from "../store/courseDetails";
 
 const CurrentCourse = () => {
   const classes = useStyles();
@@ -45,6 +46,7 @@ const CurrentCourse = () => {
   const {
     data: { modules },
   } = useSelector((state) => state.entities.modules);
+
 
   const { data: currentModuleDetails } = useSelector(
     (state) => state.currentModule
@@ -66,6 +68,7 @@ const CurrentCourse = () => {
 
   useEffect(() => {
     dispatch(actions.loadModules());
+    dispatch(courseDetailActions.loadCourseDetails(course._id));
     dispatch(currentModuleActions.loadCurrentModule(currentModule));
   }, []);
 
@@ -131,6 +134,9 @@ const Sidebar = ({
   const { loading: modulesLoading } = useSelector(
     (state) => state.entities.modules
   );
+  const {
+    data: courseDetails,
+  } = useSelector((state) => state.entities.courseDetails);
 
   const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -149,6 +155,16 @@ const Sidebar = ({
         <Box className={classes.sidebarTopText}>
           <Typography variant="h6">{title}</Typography>
           <AppLinearProgress progress={progress} />
+          <a
+            href={courseDetails?.groupLink}
+            rel="noopener noreferrer"
+            target="_blank"
+            style={{ textDecoration: "none" }}
+          >
+            <Button variant="outlined" fullWidth startIcon={<WhatsApp />} disabled={!courseDetails?.groupLink}>
+              Join Whatsapp Discussions
+            </Button>
+          </a>
         </Box>
         <Divider variant="middle" />
       </Box>
@@ -171,7 +187,9 @@ const Sidebar = ({
                   onClick={() => onModuleChange(item._id)}
                 >
                   <ListItemText
-                    primary={`Module ${index + 1} - ${item.title}`}
+                    primary={`Module ${index + 1} - ${textFormat.abbreviate(
+                      item.title
+                    )}`}
                     classes={{
                       primary:
                         currentModuleId === item._id
@@ -287,7 +305,11 @@ const MainComponent = ({
             className={classes.moduleButtonsWrapper}
           >
             <Grid item>
-              <Button startIcon={<Feed />} onClick={handleDownload}>
+              <Button
+                startIcon={<Feed />}
+                disabled={!currentModule.fileUri}
+                onClick={handleDownload}
+              >
                 Download
               </Button>
             </Grid>
@@ -380,7 +402,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   sidebarListBox: {
-    height: "76vh",
+    height: "72vh",
     overflowY: "auto",
   },
   paper: {

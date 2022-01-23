@@ -9,6 +9,7 @@ const Loading = () => {
       style={{ marginTop: "3em" }}
       height={"6em"}
       width={"6em"}
+      isClickToPauseDisabled
       options={{
         loop: true,
 

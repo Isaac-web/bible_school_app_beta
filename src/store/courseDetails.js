@@ -27,12 +27,29 @@ export default slice.reducer;
 const { courseDetailsLoaded, courseLoadFailed, courseDetailsLoadStarted } =
   slice.actions;
 
-export const loadCourseDetails = (courseId) =>
-  apiRequest({
-    url: `/courses/${courseId}`,
-    onStart: courseDetailsLoadStarted.type,
-    onSuccess: courseDetailsLoaded.type,
-    onError: courseLoadFailed.type,
-  });
+export const loadCourseDetails = (courseId) => async (dispatch) => {
+  await dispatch(
+    apiRequest({
+      url: `/courses/${courseId}`,
+      onStart: courseDetailsLoadStarted.type,
+      onSuccess: courseDetailsLoaded.type,
+      onError: courseLoadFailed.type,
+      toastOnError: true,
+    })
+  );
+};
+
+export const updateCourseDetails = (id, data, callback) => async (dispatch) => {
+  await dispatch(
+    apiRequest({
+      url: `/courses/${id}`,
+      method: "patch",
+      data,
+      toastOnError: true,
+    })
+  );
+
+  if (typeof callback === "function") callback();
+};
 
 

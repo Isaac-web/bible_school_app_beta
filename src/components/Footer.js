@@ -29,12 +29,13 @@ const Footer = () => {
         alignItems="center"
       >
         <Grid item>
-          <Typography variant="h6" align="center" fontWeight={200}>
-            A platform to enrich your self with biblical knowledge
+          <Typography variant="body1" align="center" fontWeight={200}>
+            A platform to enrich yourself with biblical knowledge
           </Typography>
         </Grid>
+        <br />
         <Grid item>
-          <Typography>copyright@2021</Typography>
+          <Typography>copyright@2022</Typography>
         </Grid>
       </Grid>
     </Box>

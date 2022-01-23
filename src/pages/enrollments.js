@@ -6,9 +6,10 @@ import {
   Typography,
   InputBase,
   InputAdornment,
+  useMediaQuery,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import { makeStyles } from "@mui/styles";
+import { makeStyles, useTheme } from "@mui/styles";
 import EnrollmentCard from "../components/EnrollmentCard";
 import { loadEnrollments } from "../store/enrollments";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,9 +21,13 @@ import * as enrollmentSerivce from "../services/enrollmentService";
 import * as authService from "../services/authService";
 import { loadCourses } from "../store/courses";
 import CourseCard from "../components/CourseCard";
+import Empty from "../components/Empty";
+import bookShelfImage from "../assets/images/book-shelf.png";
 
 const Enrollments = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const dispatch = useDispatch();
   const history = useHistory();
   const [searchResults, setSearchResults] = useState([]);
@@ -66,20 +71,16 @@ const Enrollments = () => {
       <>
         <Container
           sx={{
-            padding: "8em 0",
+            padding: `${matchesSM ? "6em 4em" : "8em"}`,
             marginTop: "10px",
             backgroundColor: config.colors.light,
+            borderRadius: `${matchesSM ? 0 : "1em"}`,
           }}
         >
-          <Typography align="center" variant="h5">
-            No Enrollment Yet
-          </Typography>
-          <Typography align="center" variant="body2">
-            <Link to="/courses">Visit the courses page to enroll</Link>
-          </Typography>
+          <Empty imagePath={bookShelfImage} title={"No enrollments yet"} />
         </Container>
         {courses.length && (
-          <Container sx={{ marginTop: "10em" }}>
+          <Container sx={{ marginTop: "5em" }}>
             <Typography variant="h5" gutterBottom>
               Available Courses
             </Typography>
@@ -105,12 +106,6 @@ const Enrollments = () => {
         )}
       </>
     );
-
-  // title,
-  // imageUri,
-  // coordinatorName,
-  // coordinatorImageUri,
-  // numberOfEnrollments,
 
   const finalData = searchResults.length ? searchResults : enrollments;
   return (

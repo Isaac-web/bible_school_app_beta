@@ -99,6 +99,7 @@ export const addCourse = (data, callback) => async (dispatch) => {
       onStart: courseAddStarted.type,
       onSuccess: courseAdded.type,
       onError: courseAddFailed.type,
+      toastOnError: true,
     })
   );
 

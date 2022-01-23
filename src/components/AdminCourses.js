@@ -14,11 +14,13 @@ import {
   Grid,
   TextField,
   CircularProgress,
-  Alert,
   Typography,
+  useMediaQuery
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import {useTheme} from "@mui/styles";
 
 import config from "../config.json";
 import * as coursesActions from "../store/courses";
@@ -28,12 +30,20 @@ import NoMatchFound from "../components/NoMatchFound";
 import Empty from "../components/Empty";
 import UsersDialog from "./UsersDialog";
 import Loading from "./Loading";
+import * as textFormat from "../utils/textFormat";
 
 const AdminCourses = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deleteDialogInput, setDeleteDialogInput] = useState("");
+  const [courseToBeDeleted, setCourseToBeDeleted] = useState({
+    courseId: "",
+    title: "",
+    index: -1,
+  });
 
   const { data, errorMessage, awaiting, loading } = useSelector(
     (state) => state.entities.courses
@@ -49,7 +59,6 @@ const AdminCourses = () => {
       const coordinatorName = `${item.coordinator.firstname} ${item.coordinator.lastname}`;
       const subtitle = `${coordinatorName} (${item.enrollments})`;
       const _id = item._id;
-
       return { _id, title, subtitle };
     });
   };
@@ -60,8 +69,14 @@ const AdminCourses = () => {
     setOpen(false);
   };
 
-  const handleCourseDelete = (item, index) => {
-    dispatch(coursesActions.deleteCourse(item._id, index));
+  const handleCourseDelete = () => {
+    dispatch(
+      coursesActions.deleteCourse(
+        courseToBeDeleted.courseId,
+        courseToBeDeleted.index
+      )
+    );
+    closeDeleteDialog();
   };
 
   const handleSearch = ({ target: input }) => {
@@ -73,20 +88,45 @@ const AdminCourses = () => {
     setSearchResults(results);
   };
 
+  const openDelteDialog = (course, index) => {
+    setDeleteDialogOpen(true);
+
+    setCourseToBeDeleted({
+      courseId: course._id,
+      title: course.title,
+      index: index,
+    });
+
+    console.log(courseToBeDeleted);
+  };
+
+  const closeDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+
+    setCourseToBeDeleted({
+      courseId: "null",
+      title: "",
+      index: -1,
+    });
+
+    setDeleteDialogInput("");
+  };
+
   const finalData = searchResults.length ? searchResults : courses;
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
         Courses
       </Typography>
+      {Boolean(courses.length) && (
+        <Typography variant="subtitle1" gutterBottom>
+          There {courses.length > 1 ? "are" : "is"} {courses.length} course
+          {courses.length > 1 && "s"} in the database.
+        </Typography>
+      )}
       <Button onClick={() => setOpen(true)} sx={{ marginBottom: "1.5em" }}>
         New Course
       </Button>
-      {errorMessage && (
-        <Alert sx={{ marginBottom: "1em" }} severity="error">
-          {errorMessage}
-        </Alert>
-      )}
       <InputBase
         component={"paper"}
         fullWidth
@@ -105,23 +145,79 @@ const AdminCourses = () => {
           borderRadius: "3px",
         }}
       />
-      <Paper>
-        {!searchResults.length && searchInput ? (
-          <NoMatchFound />
-        ) : (
+
+      {!searchResults.length && searchInput ? (
+        <NoMatchFound />
+      ) : (
+        <Paper>
           <AppList
             loading={loading}
             data={finalData}
-            onItemSelect={handleCourseDelete}
+            onSecondaryAction={openDelteDialog}
             secondaryAction={
-              <Button size="small" variant="outlined">
+              <Button
+                sx={{ color: "rgba(255, 0, 0, 0.8)" }}
+                size="small"
+                variant="outlined"
+              >
                 Delete
               </Button>
             }
           />
-        )}
-      </Paper>
+        </Paper>
+      )}
+
       <NewCourseDialog open={open} onClose={handleCloseDialog} />
+
+      <AppDialog
+        title="Delete course?"
+        open={deleteDialogOpen}
+        onClose={closeDeleteDialog}
+        maxWidth="xs"
+      >
+        <Grid container direction="column" spacing={3}>
+          <Grid item>
+            <Typography>
+              To delete{" "}
+              <strong style={{ color: "black" }}>
+                {courseToBeDeleted.title}
+              </strong>
+              , confirm by typing the title.
+            </Typography>
+          </Grid>
+
+          <Grid item>
+            <TextField
+              autoFocus
+              value={deleteDialogInput}
+              onChangeCapture={({ target: input }) =>
+                setDeleteDialogInput(input.value)
+              }
+              label="Course Title"
+            />
+          </Grid>
+
+          <Grid item container justifyContent={"flex-end"} spacing={2}>
+            <Grid item>
+              <Button onClick={closeDeleteDialog} variant="outlined">
+                Cancel
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                sx={{
+                  backgroundColor: "rgba(225, 0, 0, 0.7)",
+                  "&:hover": { backgroundColor: "rgba(225, 0, 0, 0.9)" },
+                }}
+                disabled={deleteDialogInput !== courseToBeDeleted.title}
+                onClick={handleCourseDelete}
+              >
+                Delete
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </AppDialog>
     </Box>
   );
 };
@@ -226,8 +322,12 @@ const AppList = ({
   onItemSelect,
   secondaryAction,
   loading = false,
+  onSecondaryAction,
   ...rest
 }) => {
+  const theme = useTheme();
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
+
   if (loading) return <Loading />;
 
   if (!data.length) return <Empty />;
@@ -237,13 +337,32 @@ const AppList = ({
       {item && (
         <ListItem key={item?._id || index} {...rest} sx={{ cursor: "pointer" }}>
           <ListItemText
-            primary={item?.title}
-            secondary={item?.subtitle}
+            primary={textFormat.abbreviate(item?.title, matchesSM ? 25 : 80)}
+            secondary={textFormat.abbreviate(item?.subtitle, matchesSM ? 25 : 80)}
             {...rest}
           />
           {secondaryAction && (
-            <ListItemSecondaryAction onClick={() => onItemSelect(item, index)}>
-              {secondaryAction}
+            <ListItemSecondaryAction>
+              <Grid container spacing={1}>
+                <Grid item>
+                  <Box>
+                    <Button
+                      component={Link}
+                      to={`/admin/courses/${item._id}/edit`}
+                      size="small"
+                      variant="outlined"
+                    >
+                      Edit
+                    </Button>
+                  </Box>
+                </Grid>
+
+                <Grid item>
+                  <Box onClick={() => onSecondaryAction(item, index)}>
+                    {secondaryAction}
+                  </Box>
+                </Grid>
+              </Grid>
             </ListItemSecondaryAction>
           )}
         </ListItem>

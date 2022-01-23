@@ -1,15 +1,14 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 const AutoScrollContainer = ({ children }) => {
-  const container = useRef();
   const location = useLocation();
 
   useEffect(() => {
-    container.current.scrollTo(0, 0);
-  }, []);
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
-  return <div ref={container}>{children}</div>;
+  return <div>{children}</div>;
 };
 
 export default AutoScrollContainer;

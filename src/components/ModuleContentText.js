@@ -22,7 +22,7 @@ const ModuleContentText = ({ title, contentText, hideTitle }) => {
   return (
     <Paper sx={{ padding: `2em ${matchesSX ? "1em" : "5em"}` }}>
       {!hideTitle && (
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h6" gutterBottom>
           {title || "Content"}
         </Typography>
       )}
