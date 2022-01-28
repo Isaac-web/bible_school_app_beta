@@ -20,7 +20,7 @@ const CourseDetails = () => {
 
 
   
-console.log(course.imageUri);
+
 
 
   const handleEnroll = (id) => {

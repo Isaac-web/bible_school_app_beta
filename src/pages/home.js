@@ -120,7 +120,7 @@ const Home = () => {
                 Courses
               </Typography>
               <Typography variant="body1" align={matchesSM ? "center" : "left"}>
-                Courses come with resources and quizes that actually help you
+                Courses come with resources and quizes that actually help you{" "}
                 {!matchesSM && <br />}
                 learn.
               </Typography>
