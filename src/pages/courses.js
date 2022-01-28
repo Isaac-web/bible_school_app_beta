@@ -49,7 +49,6 @@ const Courses = () => {
   if (loading) return <Loading />;
 
   const finalData = searchResults.length ? searchResults : courses;
-  console.log(finalData);
   
 
   return (

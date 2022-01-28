@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Fade } from "@mui/material";
 
 import { useParams, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +7,7 @@ import Loading from "../components/Loading";
 import * as authService from "../services/authService";
 import { loadCourseDetails } from "../store/courseDetails";
 import * as enrollmentActions from "../store/enrollments";
+import * as moduleActions from "../store/modules";
 
 const CourseDetails = () => {
   const dispatch = useDispatch();
@@ -18,10 +18,9 @@ const CourseDetails = () => {
     (state) => state.entities.courseDetails
   );
 
-
-  
-
-
+  const {
+    data: { modules },
+  } = useSelector((state) => state.entities.modules);
 
   const handleEnroll = (id) => {
     const user = authService.getCurrentUser();
@@ -40,6 +39,7 @@ const CourseDetails = () => {
   };
 
   useEffect(() => {
+    dispatch(moduleActions.loadModules(id));
     dispatch(loadCourseDetails(id));
   }, []);
 
@@ -58,6 +58,8 @@ const CourseDetails = () => {
           coordinatorAddress={course?.coordinator?.address}
           coordinatorPhone={course?.coordinator?.email}
           onEnroll={() => handleEnroll(course._id)}
+          modules={modules}
+          description={course.description}
         />
       )}
     </>

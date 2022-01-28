@@ -37,7 +37,10 @@ const api =
         data,
       });
 
-      if (response.status === 401) return window.location.assign("/login");
+      if (response.status === 401) {
+        authService.clear();
+        return window.location.assign("/login");
+      }
 
       let payload = {};
 
