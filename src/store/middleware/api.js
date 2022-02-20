@@ -73,14 +73,5 @@ const api =
     }
   };
 
-const isTokenExpired = (token) => {
-  if (!token) return true;
-
-  const tokenPayload = JSON.parse(atob(token.split(".")[1]));
-  const expiry = tokenPayload.exp;
-  if (!expiry) return true;
-
-  return Math.floor(Date.now() / 1000) >= expiry;
-};
 
 export default api;
