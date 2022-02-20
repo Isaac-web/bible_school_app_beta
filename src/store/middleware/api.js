@@ -37,9 +37,10 @@ const api =
         data,
       });
 
-      if (response.status === 401) {
+      if (response.status === 401 || response.status === 403) {
         authService.clear();
-        return window.location.assign("/login");
+        window.location.pathname = "/login";
+        return;
       }
 
       let payload = {};
@@ -71,5 +72,15 @@ const api =
       }
     }
   };
+
+const isTokenExpired = (token) => {
+  if (!token) return true;
+
+  const tokenPayload = JSON.parse(atob(token.split(".")[1]));
+  const expiry = tokenPayload.exp;
+  if (!expiry) return true;
+
+  return Math.floor(Date.now() / 1000) >= expiry;
+};
 
 export default api;
