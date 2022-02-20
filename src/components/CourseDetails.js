@@ -31,7 +31,6 @@ const CouseDetails = ({
   const user = authService.getCurrentUser();
   const { loading } = useSelector((state) => state.entities.modules);
 
-  console.log(loading);
 
   const descriptionText = "No description yet.";
 
