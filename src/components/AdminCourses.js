@@ -96,8 +96,6 @@ const AdminCourses = () => {
       title: course.title,
       index: index,
     });
-
-    console.log(courseToBeDeleted);
   };
 
   const closeDeleteDialog = () => {
